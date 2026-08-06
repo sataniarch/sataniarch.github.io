@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satania Archive — The Light and The Darkness</title>
+<link rel="icon" href="assets/satania-logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#070707;
+    --panel:#121212;
+    --panel-raised:#191919;
+    --hairline:#2c2c2c;
+    --ink:#f4f2ec;
+    --ink-dim:#9a978f;
+    --ink-faint:#5c5a54;
+    --white:#ffffff;
+    --white-soft: rgba(255,255,255,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--void);
+    color:var(--ink);
+    font-family:'EB Garamond', Georgia, serif;
+    font-size:18px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:999;
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Forum', Georgia, serif;
+    font-weight:400;
+    letter-spacing:0.04em;
+    color:var(--ink);
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{color:var(--ink);}
+  button{ font-family:'EB Garamond', serif; cursor:pointer; }
+
+  /* ---------- HEADER ---------- */
+  .site-header{ position:relative; border-bottom:1px solid var(--hairline); }
+  .banner-wrap{ width:100%; overflow:hidden; line-height:0; max-height:220px; }
+  .banner-img{
+    width:100%; height:100%; object-fit:cover; object-position:center 35%;
+    display:block; filter:saturate(0) contrast(1.05);
+  }
+
+  .nav-bar{
+    position:sticky; top:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; padding:12px 28px;
+    background:rgba(7,7,7,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hairline);
+  }
+  .nav-brand{ display:flex; align-items:center; gap:12px; }
+  .nav-logo{ width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 4px rgba(255,255,255,0.25)); }
+  .nav-brand span{ font-family:'Forum', serif; letter-spacing:0.14em; font-size:1.05rem; color:var(--ink); }
+  .nav-links{ display:flex; gap:6px; }
+  .nav-links button{
+    background:none; border:1px solid transparent; color:var(--ink-dim);
+    font-size:0.95rem; letter-spacing:0.06em; padding:8px 16px;
+    transition:color 0.25s ease, border-color 0.25s ease;
+  }
+  .nav-links button:hover{color:var(--ink);}
+  .nav-links button.active{ color:var(--white); border-color:var(--ink-faint); }
+  .nav-links button:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--white); outline-offset:2px;
+  }
+
+  .disclaimer-strip{
+    text-align:center; font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--ink-faint); padding:7px 12px;
+    background:var(--panel); border-bottom:1px solid var(--hairline);
+  }
+  .disclaimer-strip .sep{color:var(--ink-faint); margin:0 10px; opacity:0.5;}
+
+  /* ---------- MAIN LAYOUT ---------- */
+  main{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  .tab-panel{display:none; animation:fadeIn 0.4s ease;}
+  .tab-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---------- ARCHIVE TOOLBAR ---------- */
+  .archive-toolbar{
+    display:flex; flex-wrap:wrap; align-items:center; gap:18px;
+    padding:36px 0 18px; margin-bottom:8px;
+  }
+  #searchInput{
+    background:var(--panel); border:1px solid var(--hairline); color:var(--ink);
+    padding:10px 14px; font-family:'EB Garamond', serif; font-style:italic;
+    font-size:1rem; min-width:240px; flex:1 1 240px;
+  }
+  #searchInput::placeholder{color:var(--ink-faint);}
+  .tag-filters{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .tag-chip{
+    background:none; border:1px solid var(--hairline); color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.08em;
+    text-transform:uppercase; padding:7px 12px; transition:all 0.2s ease; white-space:nowrap;
+  }
+  .tag-chip:hover{border-color:var(--ink-faint); color:var(--ink);}
+  .tag-chip.active{ background:var(--white); border-color:var(--white); color:#0a0a0a; }
+  .tag-chip.more{ color:var(--ink-faint); border-style:dashed; }
+  .tag-chip.more:hover{ color:var(--ink); }
+
+  .status-line{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.05em; color:var(--ink-faint);
+    padding:14px 0; border-bottom:1px solid var(--hairline); margin-bottom:32px;
+  }
+  .status-line strong{ color:var(--ink); font-weight:500; }
+  .status-line button{
+    background:none; border:1px solid var(--hairline); color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:0.05em;
+    padding:4px 9px; text-transform:uppercase;
+  }
+  .status-line button:hover{ border-color:var(--white); color:var(--ink); }
+
+  /* ---------- CATALOG GRID ---------- */
+  .catalog-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:26px; padding-bottom:64px;
+  }
+  .card{
+    background:var(--panel); border:1px solid var(--hairline); position:relative;
+    display:flex; flex-direction:column;
+    transition:border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover{
+    border-color:var(--ink-faint); transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(0,0,0,0.55), 0 0 0 1px var(--white-soft);
+  }
+  .card .thumb{
+    position:relative; aspect-ratio:16/9; width:100%;
+    background:
+      radial-gradient(ellipse at center, rgba(255,255,255,0.06), transparent 70%),
+      repeating-linear-gradient(135deg, #161616 0px, #161616 2px, #0d0d0d 2px, #0d0d0d 4px);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .card .thumb img{ width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+  .card .thumb .fallback-mark{ width:34px; height:34px; opacity:0.3; filter:grayscale(1) brightness(1.6); }
+  .card .thumb .play-glyph{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(7,7,7,0); transition:background 0.25s ease;
+  }
+  .card:hover .play-glyph{background:rgba(7,7,7,0.35);}
+  .card .play-glyph svg{ opacity:0; transform:scale(0.85); transition:all 0.25s ease; }
+  .card:hover .play-glyph svg{opacity:1; transform:scale(1);}
+  .card .num{
+    position:absolute; top:8px; left:8px; font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem; letter-spacing:0.05em; color:var(--ink);
+    background:rgba(7,7,7,0.75); padding:3px 7px; border:1px solid var(--ink-faint); z-index:2;
+  }
+  .card .body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .card .title{
+    font-family:'Forum', serif; font-size:1.02rem; letter-spacing:0.02em;
+    color:var(--ink); line-height:1.32;
+  }
+  .card .meta{
+    display:flex; flex-wrap:wrap; gap:6px; align-items:center;
+    font-family:'JetBrains Mono', monospace; font-size:0.66rem; letter-spacing:0.04em;
+    color:var(--ink-faint); margin-top:auto; padding-top:6px;
+  }
+  .card .meta .plist{
+    color:var(--ink-dim); border:1px solid var(--hairline); padding:2px 7px;
+    text-transform:uppercase;
+  }
+  .card-btn{ all:unset; position:absolute; inset:0; z-index:3; }
+
+  .empty-state, .loading-state{ text-align:center; color:var(--ink-faint); font-style:italic; padding:60px 0; }
+  .loading-state.hidden, .empty-state[hidden]{ display:none; }
+
+  /* ---------- PLAYLISTS TAB ---------- */
+  .playlists-intro{ padding:36px 0 8px; }
+  .playlists-intro p{ color:var(--ink-dim); max-width:640px; }
+  .playlist-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    gap:16px; padding:24px 0 64px;
+  }
+  .playlist-card{
+    all:unset; cursor:pointer;
+    background:var(--panel); border:1px solid var(--hairline);
+    padding:20px 20px 18px; display:flex; flex-direction:column; gap:10px;
+    transition:all 0.25s ease;
+  }
+  .playlist-card:hover{ border-color:var(--white-soft); transform:translateY(-2px); }
+  .playlist-card.all-card{
+    grid-column:1 / -1; flex-direction:row; align-items:baseline; justify-content:space-between;
+    border-color:var(--ink-faint); background:var(--panel-raised);
+  }
+  .playlist-card .p-index{ font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:var(--ink-faint); letter-spacing:0.1em; }
+  .playlist-card .p-name{ font-family:'Forum', serif; font-size:1.15rem; color:var(--ink); }
+  .playlist-card.all-card .p-name{ font-size:1.4rem; }
+  .playlist-card .p-count{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--ink-faint); letter-spacing:0.05em; }
+
+  /* ---------- ABOUT ---------- */
+  .about-section{ padding:56px 0 80px; text-align:center; }
+  .about-sigil{ width:230px; height:230px; margin:0 auto 18px; position:relative; }
+  .about-sigil svg{width:100%; height:100%; overflow:visible;}
+  .sigil-ring{ animation:spin 90s linear infinite; transform-origin:center; }
+  .sigil-ring text{ fill:var(--ink-faint); font-family:'JetBrains Mono', monospace; font-size:7.6px; letter-spacing:2px; }
+  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  .about-emblem{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:96px; height:96px; object-fit:contain; animation:flicker 5s ease-in-out infinite;
+  }
+  @keyframes flicker{
+    0%, 100%{ filter:drop-shadow(0 0 6px rgba(255,255,255,0.28)) drop-shadow(0 0 16px rgba(255,255,255,0.12)); }
+    45%{ filter:drop-shadow(0 0 10px rgba(255,255,255,0.45)) drop-shadow(0 0 26px rgba(255,255,255,0.2)); }
+    60%{ filter:drop-shadow(0 0 4px rgba(255,255,255,0.2)) drop-shadow(0 0 12px rgba(255,255,255,0.08)); }
+  }
+  .about-section h1{ font-size:2.3rem; letter-spacing:0.1em; margin:8px 0 4px; }
+  .about-tagline{
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; letter-spacing:0.28em;
+    text-transform:uppercase; color:var(--ink-faint); margin-bottom:40px;
+  }
+  .about-copy{ max-width:640px; margin:0 auto 40px; text-align:left; color:var(--ink-dim); font-size:1.08rem; }
+  .about-copy p{margin:0 0 18px;}
+  .about-copy p:last-child{margin-bottom:0;}
+  .about-copy strong{color:var(--ink); font-weight:600;}
+  .disclaimer-box{
+    max-width:640px; margin:0 auto; text-align:left; background:var(--panel);
+    border:1px solid var(--hairline); border-left:3px solid var(--white); padding:22px 26px;
+  }
+  .disclaimer-box .label{
+    font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--ink); margin-bottom:10px; display:block;
+  }
+  .disclaimer-box p{ font-style:italic; color:var(--ink); margin:0; }
+
+  /* ---------- PLAYER MODAL ---------- */
+  .player-modal{
+    display:none; position:fixed; inset:0; z-index:500;
+    background:rgba(3,3,3,0.9); align-items:center; justify-content:center; padding:24px;
+  }
+  .player-modal.open{display:flex;}
+  .player-panel{
+    background:var(--panel); border:1px solid var(--ink-faint); max-width:920px;
+    width:100%; max-height:90vh; overflow:auto; position:relative;
+  }
+  .player-close{
+    position:absolute; top:8px; right:8px; background:rgba(7,7,7,0.8);
+    border:1px solid var(--hairline); color:var(--ink); width:34px; height:34px;
+    font-size:1.2rem; line-height:1; z-index:5;
+  }
+  .player-close:hover{border-color:var(--white);}
+  .player-frame{ width:100%; aspect-ratio:16/9; background:#000; }
+  .player-frame iframe{width:100%; height:100%; border:0;}
+  .player-info{ padding:18px 22px 6px; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+  .player-info .player-num{ font-family:'JetBrains Mono', monospace; color:var(--ink-dim); font-size:0.8rem; }
+  .player-info h3{ margin:0; font-size:1.2rem; }
+  .player-info .player-plists{ font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:var(--ink-faint); letter-spacing:0.05em; }
+  .player-nav{ display:flex; justify-content:space-between; padding:12px 22px 22px; gap:12px; }
+  .player-nav button{
+    background:none; border:1px solid var(--hairline); color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:0.75rem; letter-spacing:0.06em;
+    text-transform:uppercase; padding:9px 16px; transition:all 0.2s ease;
+  }
+  .player-nav button:hover:not(:disabled){border-color:var(--ink-faint); color:var(--ink);}
+  .player-nav button:disabled{opacity:0.3; cursor:default;}
+
+  /* ---------- FOOTER ---------- */
+  footer{ border-top:1px solid var(--hairline); padding:28px 28px 40px; text-align:center; color:var(--ink-faint); font-size:0.82rem; }
+  footer img{ width:22px; height:22px; object-fit:contain; opacity:0.5; margin-bottom:10px; filter:grayscale(1); }
+  footer .foot-note{
+    font-family:'JetBrains Mono', monospace; font-size:0.66rem; letter-spacing:0.1em;
+    text-transform:uppercase; margin-top:6px; color:var(--ink-faint);
+  }
+
+  @media (max-width:640px){
+    body{font-size:16px;}
+    .nav-brand span{display:none;}
+    .about-section h1{font-size:1.8rem;}
+    .catalog-grid{grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:16px;}
+    .playlist-card.all-card{ flex-direction:column; gap:4px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="banner-wrap">
+    <img class="banner-img" src="assets/satania-banner.webp" alt="Satania Archive — Independent Archive, Not Official — The Light and The Darkness">
+  </div>
+  <nav class="nav-bar">
+    <div class="nav-brand">
+      <img class="nav-logo" src="assets/satania-logo.webp" alt="Satania Archive emblem">
+      <span>SATANIA ARCHIVE</span>
+    </div>
+    <div class="nav-links">
+      <button data-tab="archive" class="active" type="button">Archive</button>
+      <button data-tab="playlists" type="button">Playlists</button>
+      <button data-tab="about" type="button">About</button>
+    </div>
+  </nav>
+  <div class="disclaimer-strip">
+    Independent Archive <span class="sep">·</span> Not Official <span class="sep">·</span> Fan-Run Preservation Project
+  </div>
+</header>
+
+<main>
+  <section id="archive" class="tab-panel active">
+    <div class="archive-toolbar">
+      <input type="search" id="searchInput" placeholder="Search meditations…" aria-label="Search the archive">
+      <div class="tag-filters" id="tagFilters"></div>
+    </div>
+    <div class="status-line" id="statusLine"></div>
+    <p class="loading-state" id="loadingState">Opening the vault…</p>
+    <div class="catalog-grid" id="catalogGrid"></div>
+    <p class="empty-state" id="emptyState" hidden>Nothing found. The dark keeps its secrets.</p>
+  </section>
+
+  <section id="playlists" class="tab-panel">
+    <div class="playlists-intro">
+      <h2>Playlists</h2>
+      <p>Meditations grouped by entity, practice, and theme. A meditation may belong to more than one collection. Select a playlist to open it in the Archive.</p>
+    </div>
+    <div class="playlist-grid" id="playlistGrid"></div>
+  </section>
+
+  <section id="about" class="tab-panel">
+    <div class="about-section">
+      <div class="about-sigil">
+        <svg viewBox="0 0 200 200">
+          <g class="sigil-ring">
+            <defs>
+              <path id="ringPath" d="M 100,100 m -84,0 a 84,84 0 1,1 168,0 a 84,84 0 1,1 -168,0"/>
+            </defs>
+            <text>
+              <textPath href="#ringPath" startOffset="0%">· LUX ET TENEBRAE · MEMENTO ARCHIVUM · AVE SATANAS · CUSTODES MEMORIAE ·&#160;&#160;&#160;</textPath>
+            </text>
+          </g>
+        </svg>
+        <img class="about-emblem" src="assets/satania-logo.webp" alt="Satania Archive emblem">
+      </div>
+      <h1>SATANIA ARCHIVE</h1>
+      <p class="about-tagline">The Light and The Darkness</p>
+
+      <div class="about-copy">
+        <p><strong>Satania Archive</strong> is an independent, fan-run collection of Satania's meditations — voice, breath, and silence, addressed at once to the light and to the darkness within. We do not create these recordings. We preserve them.</p>
+        <p>Every meditation here is a page pulled from the fire of forgetting. We catalogue them by number, like lines in a grimoire, so what was once spoken can be heard again.</p>
+        <p>The archive is maintained by anonymous keepers from the community. We are not affiliated with the original creator and do not speak on their behalf — we simply guard what could have been lost.</p>
+      </div>
+
+      <div class="disclaimer-box">
+        <span class="label">Note</span>
+        <p>An archive of Satania's meditations. The original channel has been blocked by YouTube. We preserve the legacy. Ave Satanas!</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="player-modal" id="playerModal">
+  <div class="player-panel">
+    <button class="player-close" id="playerClose" type="button" aria-label="Close">×</button>
+    <div class="player-frame">
+      <iframe id="playerIframe" src="" allow="fullscreen" allowfullscreen title="Meditation player"></iframe>
+    </div>
+    <div class="player-info">
+      <span class="player-num mono" id="playerNum"></span>
+      <h3 id="playerTitle"></h3>
+    </div>
+    <div class="player-info" style="padding-top:0;">
+      <span class="player-plists" id="playerPlists"></span>
+    </div>
+    <div class="player-nav">
+      <button id="prevBtn" type="button">‹ Prev</button>
+      <button id="nextBtn" type="button">Next ›</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <img src="assets/satania-logo.webp" alt="">
+  <div>© Satania Archive · A vault of darkness and light</div>
+  <div class="foot-note">Independent fan archive · Not affiliated with YouTube · Not official</div>
+</footer>
+
+<script>
+
+const FALLBACK_MARK = "assets/satania-logo.webp";
+const DATA_URL = "meditations.json";
+
+/* Playlists featured as quick-filter chips on the Archive tab.
+   The full list of all playlists lives in the Playlists tab. */
+const FEATURED_PLAYLISTS = [
+  "Satan", "Lucifer", "Lilith", "Human Soul Transformation",
+  "Angelic Meditations", "Ahrimanic Yoga", "Indian Meditations", "Astro Music Meditations"
+];
+
+let MEDITATIONS = [];   // loaded from JSON, each gets .num assigned by position
+let PLAYLIST_ORDER = []; // unique playlist names, order of first appearance
+let activeTag = 'ALL';
+let searchTerm = '';
+let currentFilteredList = []; // list currently shown in the modal's prev/next context
+
+const grid = document.getElementById('catalogGrid');
+const tagFiltersEl = document.getElementById('tagFilters');
+const searchInput = document.getElementById('searchInput');
+const emptyState = document.getElementById('emptyState');
+const loadingState = document.getElementById('loadingState');
+const statusLine = document.getElementById('statusLine');
+const playlistGrid = document.getElementById('playlistGrid');
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#39;');
+}
+
+function driveThumb(id){ return `https://drive.google.com/thumbnail?id=${id}&sz=w400`; }
+function drivePreview(id){ return `https://drive.google.com/file/d/${id}/preview`; }
+
+async function loadData(){
+  try{
+    const res = await fetch(DATA_URL);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+    MEDITATIONS = raw.map((m, i) => ({...m, num: i + 1}));
+
+    const seen = new Set();
+    PLAYLIST_ORDER = [];
+    MEDITATIONS.forEach(m => (m.playlists||[]).forEach(p => {
+      if(!seen.has(p)){ seen.add(p); PLAYLIST_ORDER.push(p); }
+    }));
+
+    loadingState.classList.add('hidden');
+    buildTagFilters();
+    buildPlaylistTab();
+    renderGrid();
+  }catch(err){
+    loadingState.innerHTML = 'The vault could not be opened.<br>If you are viewing this file directly from disk, browsers block local data loading (CORS). Run a local server or view the page after publishing to GitHub Pages.';
+    console.error('Failed to load meditations.json:', err);
+  }
+}
+
+function buildTagFilters(){
+  const chips = ['ALL', ...FEATURED_PLAYLISTS.filter(p => PLAYLIST_ORDER.includes(p))];
+  tagFiltersEl.innerHTML = chips.map(t =>
+    `<button class="tag-chip ${t===activeTag?'active':''}" data-tag="${escapeHtml(t)}" type="button">${t==='ALL' ? 'All' : escapeHtml(t)}</button>`
+  ).join('') + `<button class="tag-chip more" data-goto-playlists type="button">All Playlists →</button>`;
+
+  tagFiltersEl.querySelectorAll('.tag-chip[data-tag]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeTag = btn.dataset.tag;
+      buildTagFilters();
+      renderGrid();
+    });
+  });
+  tagFiltersEl.querySelector('[data-goto-playlists]').addEventListener('click', ()=> switchTab('playlists'));
+}
+
+function buildPlaylistTab(){
+  const counts = {};
+  PLAYLIST_ORDER.forEach(p => counts[p] = MEDITATIONS.filter(m => (m.playlists||[]).includes(p)).length);
+
+  const allCard = `
+    <button class="playlist-card all-card" data-tag="ALL" type="button">
+      <span class="p-name">All</span>
+      <span class="p-count">${MEDITATIONS.length} meditations</span>
+    </button>`;
+
+  const cards = PLAYLIST_ORDER.map((p, i) => `
+    <button class="playlist-card" data-tag="${escapeHtml(p)}" type="button">
+      <span class="p-index mono">Vol. ${String(i+1).padStart(2,'0')}</span>
+      <span class="p-name">${escapeHtml(p)}</span>
+      <span class="p-count mono">${counts[p]} meditation${counts[p]===1?'':'s'}</span>
+    </button>`).join('');
+
+  playlistGrid.innerHTML = allCard + cards;
+  playlistGrid.querySelectorAll('.playlist-card').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeTag = btn.dataset.tag;
+      searchTerm = '';
+      searchInput.value = '';
+      buildTagFilters();
+      renderGrid();
+      switchTab('archive');
+    });
+  });
+}
+
+function getFiltered(){
+  const term = searchTerm.trim().toLowerCase();
+  return MEDITATIONS.filter(m=>{
+    const matchesTag = activeTag==='ALL' || (m.playlists||[]).includes(activeTag);
+    if(!matchesTag) return false;
+    if(term === '') return true;
+    const inTitle = m.title.toLowerCase().includes(term);
+    const inPlaylists = (m.playlists||[]).some(p => p.toLowerCase().includes(term));
+    return inTitle || inPlaylists;
+  });
+}
+
+function renderStatusLine(){
+  const total = MEDITATIONS.length;
+  const shown = currentFilteredList.length;
+  const hasFilter = activeTag !== 'ALL';
+  const hasSearch = searchTerm.trim() !== '';
+
+  if(!hasFilter && !hasSearch){
+    statusLine.innerHTML = `<span>${total} meditations in the archive</span>`;
+    return;
+  }
+  let parts = [`<strong>${shown}</strong> of ${total} shown`];
+  if(hasFilter) parts.push(`playlist: <strong>${escapeHtml(activeTag)}</strong>`);
+  if(hasSearch) parts.push(`search: <strong>"${escapeHtml(searchTerm.trim())}"</strong>`);
+  statusLine.innerHTML = parts.join(' &nbsp;·&nbsp; ') + ` <button id="clearFilters" type="button">Reset ✕</button>`;
+  document.getElementById('clearFilters').addEventListener('click', ()=>{
+    activeTag = 'ALL';
+    searchTerm = '';
+    searchInput.value = '';
+    buildTagFilters();
+    renderGrid();
+  });
+}
+
+function renderGrid(){
+  const items = getFiltered();
+  currentFilteredList = items;
+  emptyState.hidden = items.length !== 0;
+  renderStatusLine();
+
+  grid.innerHTML = items.map(m => {
+    const num = String(m.num).padStart(3,'0');
+    const plistChips = (m.playlists||[]).map(p => `<span class="plist">${escapeHtml(p)}</span>`).join('');
+    return `
+    <article class="card">
+      <div class="thumb">
+        <img loading="lazy" src="${driveThumb(m.id)}" alt=""
+             onerror="this.style.display='none'; this.parentElement.querySelector('.fallback-mark').style.display='block';">
+        <img class="fallback-mark" style="display:none;" src="${FALLBACK_MARK}" alt="">
+        <span class="num mono">No. ${num}</span>
+        <div class="play-glyph" aria-hidden="true">
+          <svg width="46" height="46" viewBox="0 0 46 46">
+            <circle cx="23" cy="23" r="21" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+            <path d="M18,14 L32,23 L18,32 Z" fill="#f4f2ec"/>
+          </svg>
+        </div>
+      </div>
+      <div class="body">
+        <h3 class="title">${escapeHtml(m.title)}</h3>
+        <div class="meta">${plistChips}</div>
+      </div>
+      <button class="card-btn" type="button" aria-label="Open ${escapeHtml(m.title)}" data-num="${m.num}"></button>
+    </article>`;
+  }).join('');
+
+  grid.querySelectorAll('.card-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> openPlayerByNum(parseInt(btn.dataset.num,10)));
+  });
+}
+
+searchInput.addEventListener('input', (e)=>{
+  searchTerm = e.target.value;
+  renderGrid();
+});
+
+/* ---------- player modal (navigates within the currently filtered list) ---------- */
+const modal = document.getElementById('playerModal');
+const iframe = document.getElementById('playerIframe');
+const playerNum = document.getElementById('playerNum');
+const playerTitle = document.getElementById('playerTitle');
+const playerPlists = document.getElementById('playerPlists');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+let currentPos = null; // index within currentFilteredList
+
+function openPlayerByNum(num){
+  const pos = currentFilteredList.findIndex(m => m.num === num);
+  if(pos === -1) return;
+  openPlayerAtPos(pos);
+}
+function openPlayerAtPos(pos){
+  currentPos = pos;
+  const m = currentFilteredList[pos];
+  iframe.src = drivePreview(m.id);
+  playerNum.textContent = `No. ${String(m.num).padStart(3,'0')}`;
+  playerTitle.textContent = m.title;
+  playerPlists.textContent = (m.playlists||[]).join(' · ');
+  prevBtn.disabled = pos <= 0;
+  nextBtn.disabled = pos >= currentFilteredList.length - 1;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePlayer(){
+  modal.classList.remove('open');
+  iframe.src = '';
+  document.body.style.overflow = '';
+}
+document.getElementById('playerClose').addEventListener('click', closePlayer);
+modal.addEventListener('click', (e)=>{ if(e.target === modal) closePlayer(); });
+document.addEventListener('keydown', (e)=>{
+  if(!modal.classList.contains('open')) return;
+  if(e.key === 'Escape') closePlayer();
+  if(e.key === 'ArrowLeft' && !prevBtn.disabled) openPlayerAtPos(currentPos - 1);
+  if(e.key === 'ArrowRight' && !nextBtn.disabled) openPlayerAtPos(currentPos + 1);
+});
+prevBtn.addEventListener('click', ()=>{ if(currentPos > 0) openPlayerAtPos(currentPos - 1); });
+nextBtn.addEventListener('click', ()=>{ if(currentPos < currentFilteredList.length - 1) openPlayerAtPos(currentPos + 1); });
+
+/* ---------- tabs ---------- */
+function switchTab(name){
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id===name));
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+}
+document.querySelectorAll('.nav-links button').forEach(btn=>{
+  btn.addEventListener('click', ()=> switchTab(btn.dataset.tab));
+});
+
+loadData();
+</script>
+</body>
+</html>
