@@ -248,6 +248,31 @@
   }
   .disclaimer-box p{ font-style:italic; color:var(--ink); margin:0; }
 
+  .elsewhere{
+    max-width:640px; margin:28px auto 0; text-align:left;
+  }
+  .elsewhere .label{
+    font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--ink-faint); margin-bottom:14px; display:block;
+  }
+  .elsewhere-list{
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .elsewhere-list a{
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+    text-decoration:none; color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:0.85rem; letter-spacing:0.03em;
+    padding:10px 0; border-bottom:1px solid var(--hairline);
+    transition:color 0.2s ease, padding-left 0.2s ease;
+  }
+  .elsewhere-list a:hover{ color:var(--ink); padding-left:6px; }
+  .elsewhere-list a .platform{
+    color:var(--ink); text-transform:uppercase; letter-spacing:0.12em; font-size:0.72rem;
+    min-width:88px;
+  }
+  .elsewhere-list a .url{ color:var(--ink-faint); word-break:break-all; }
+  .elsewhere-list a:hover .url{ color:var(--ink-dim); }
+
   /* ---------- PLAYER MODAL ---------- */
   .player-modal{
     display:none; position:fixed; inset:0; z-index:500;
@@ -351,7 +376,7 @@
               <path id="ringPath" d="M 100,100 m -84,0 a 84,84 0 1,1 168,0 a 84,84 0 1,1 -168,0"/>
             </defs>
             <text>
-              <textPath href="#ringPath" startOffset="0%">· SOLVE ET COAGULA · AGIOS O BAPHOMET · AVE SATANAS · IN NOMINE DIABOLI ·&#160;&#160;&#160;</textPath>
+              <textPath href="#ringPath" startOffset="0%">· SOLVE ET COAGULA · AGIOS O LUCIFER · AVE SATANAS · IN NOMINE DIABOLI ·&#160;&#160;&#160;</textPath>
             </text>
           </g>
         </svg>
@@ -369,6 +394,21 @@
       <div class="disclaimer-box">
         <span class="label">Note</span>
         <p>An archive of Satania's meditations. The original channel has been blocked by YouTube. We preserve the legacy. Ave Satanas!</p>
+      </div>
+
+      <div class="elsewhere">
+        <span class="label">Elsewhere</span>
+        <div class="elsewhere-list">
+          <a href="https://www.youtube.com/@The_Satania_Archive/" target="_blank" rel="noopener noreferrer">
+            <span class="platform">YouTube:</span><span class="url">https://www.youtube.com/@The_Satania_Archive/</span>
+          </a>
+          <a href="https://t.me/The_Satania_Archive" target="_blank" rel="noopener noreferrer">
+            <span class="platform">Telegram:</span><span class="url">https://t.me/The_Satania_Archive</span>
+          </a>
+          <a href="https://rumble.com/c/c-7938906" target="_blank" rel="noopener noreferrer">
+            <span class="platform">Rumble:</span><span class="url">https://rumble.com/c/c-7938906</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -396,8 +436,8 @@
 
 <footer>
   <img src="assets/satania-logo.webp" alt="">
-  <div>© Satania Archive · A vault of darkness and light</div>
-  <div class="foot-note">Independent fan archive · Not affiliated with YouTube · Not official</div>
+  <div>Satania Archive · A vault of darkness and light</div>
+  <div class="foot-note">Independent fan archive · Preserves Deleted Materials · Not official</div>
 </footer>
 
 <script>
@@ -435,7 +475,7 @@ function escapeHtml(str){
     .replaceAll("'",'&#39;');
 }
 
-function driveThumb(id){ return `https://drive.google.com/thumbnail?id=${id}&sz=w400`; }
+function localThumb(num){ return `assets/thumbs/${String(num).padStart(3,'0')}.webp`; }
 function drivePreview(id){ return `https://drive.google.com/file/d/${id}/preview`; }
 
 async function loadData(){
@@ -554,7 +594,7 @@ function renderGrid(){
     return `
     <article class="card">
       <div class="thumb">
-        <img loading="lazy" src="${driveThumb(m.id)}" alt=""
+        <img loading="lazy" src="${localThumb(m.num)}" alt=""
              onerror="this.style.display='none'; this.parentElement.querySelector('.fallback-mark').style.display='block';">
         <img class="fallback-mark" style="display:none;" src="${FALLBACK_MARK}" alt="">
         <span class="num mono">No. ${num}</span>
