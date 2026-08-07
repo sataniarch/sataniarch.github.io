@@ -294,10 +294,13 @@
     background:var(--panel); border:1px solid var(--ink-faint); max-width:920px;
     width:100%; max-height:90vh; max-height:90dvh; overflow:auto; position:relative;
   }
+  .player-header{
+    display:flex; justify-content:flex-end; padding:8px 8px 0;
+  }
   .player-close{
-    position:absolute; top:8px; right:8px; background:rgba(7,7,7,0.8);
+    background:rgba(7,7,7,0.8);
     border:1px solid var(--hairline); color:var(--ink); width:34px; height:34px;
-    font-size:1.2rem; line-height:1; z-index:5;
+    font-size:1.2rem; line-height:1;
   }
   .player-close:hover{border-color:var(--white);}
   .player-frame{ width:100%; aspect-ratio:16/9; background:#000; }
@@ -314,6 +317,13 @@
   }
   .player-nav button:hover:not(:disabled){border-color:var(--ink-faint); color:var(--ink);}
   .player-nav button:disabled{opacity:0.3; cursor:default;}
+
+  @media (max-width:640px){
+    .player-modal{ padding:6px; }
+    .player-header{ padding:6px 6px 0; }
+    .player-info{ padding:14px 16px 4px; }
+    .player-nav{ padding:10px 16px 16px; }
+  }
 
   /* ---------- FOOTER ---------- */
   footer{ border-top:1px solid var(--hairline); padding:28px 28px 40px; text-align:center; color:var(--ink-faint); font-size:0.82rem; }
@@ -431,7 +441,9 @@
 
 <div class="player-modal" id="playerModal">
   <div class="player-panel">
-    <button class="player-close" id="playerClose" type="button" aria-label="Close">×</button>
+    <div class="player-header">
+      <button class="player-close" id="playerClose" type="button" aria-label="Close">×</button>
+    </div>
     <div class="player-frame">
       <iframe id="playerIframe" src="" allow="fullscreen" allowfullscreen title="Meditation player"></iframe>
     </div>
