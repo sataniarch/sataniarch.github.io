@@ -325,6 +325,213 @@
     .player-nav{ padding:10px 16px 16px; }
   }
 
+
+  /* ---------- RESPONSIVE SCREEN MODES ---------- */
+  body.screen-desktop {}
+
+  body.screen-tablet main{
+    padding-left:20px;
+    padding-right:20px;
+  }
+
+  body.screen-tablet .nav-bar{
+    padding-left:20px;
+    padding-right:20px;
+  }
+
+  body.screen-tablet .catalog-grid{
+    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    gap:22px;
+  }
+
+  body.screen-phone main{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  body.screen-phone .banner-wrap{
+    max-height:150px;
+  }
+
+  body.screen-phone .nav-bar{
+    flex-wrap:wrap;
+    justify-content:center;
+    padding:10px 14px 12px;
+    gap:10px;
+  }
+
+  body.screen-phone .nav-brand{
+    width:100%;
+    justify-content:center;
+  }
+
+  body.screen-phone .nav-links{
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+
+  body.screen-phone .nav-links button{
+    padding:7px 10px;
+    font-size:0.8rem;
+  }
+
+  body.screen-phone .disclaimer-strip{
+    font-size:0.58rem;
+    line-height:1.5;
+    letter-spacing:0.12em;
+    padding:6px 10px;
+  }
+
+  body.screen-phone .disclaimer-strip .sep{
+    display:none;
+  }
+
+  body.screen-phone .archive-toolbar{
+    padding:24px 0 14px;
+    gap:12px;
+    margin-bottom:0;
+  }
+
+  body.screen-phone #searchInput{
+    min-width:0;
+    width:100%;
+    flex:1 1 100%;
+    font-size:0.95rem;
+  }
+
+  body.screen-phone .tag-filters{
+    width:100%;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+
+  body.screen-phone .tag-filters::-webkit-scrollbar{
+    display:none;
+  }
+
+  body.screen-phone .tag-chip{
+    flex:0 0 auto;
+    padding:7px 10px;
+    font-size:0.64rem;
+  }
+
+  body.screen-phone .status-line{
+    margin-bottom:22px;
+    font-size:0.64rem;
+    line-height:1.45;
+  }
+
+  body.screen-phone .catalog-grid{
+    grid-template-columns:1fr;
+    gap:16px;
+    padding-bottom:44px;
+  }
+
+  body.screen-phone .card{
+    border-radius:0;
+  }
+
+  body.screen-phone .card .title{
+    font-size:1.05rem;
+  }
+
+  body.screen-phone .card .meta{
+    gap:5px;
+  }
+
+  body.screen-phone .player-modal{
+    padding:0;
+    align-items:stretch;
+    justify-content:stretch;
+    background:#000;
+  }
+
+  body.screen-phone .player-panel{
+    width:100vw;
+    height:100vh;
+    height:100dvh;
+    max-width:none;
+    max-height:none;
+    overflow:hidden;
+    border:none;
+    display:grid;
+    grid-template-rows:minmax(56svh, 1fr) auto auto;
+    background:var(--panel);
+  }
+
+  body.screen-phone .player-header{
+    position:absolute;
+    top:8px;
+    right:8px;
+    z-index:3;
+    padding:0;
+  }
+
+  body.screen-phone .player-close{
+    width:42px;
+    height:42px;
+    font-size:1.35rem;
+    background:rgba(7,7,7,0.88);
+  }
+
+  body.screen-phone .player-frame{
+    grid-row:1;
+    aspect-ratio:auto;
+    min-height:56svh;
+  }
+
+  body.screen-phone .player-frame iframe{
+    height:100%;
+  }
+
+  body.screen-phone .player-info{
+    padding:10px 14px 2px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+  }
+
+  body.screen-phone .player-info h3{
+    font-size:1rem;
+    line-height:1.2;
+  }
+
+  body.screen-phone .player-info .player-num{
+    font-size:0.72rem;
+  }
+
+  body.screen-phone .player-info .player-plists{
+    font-size:0.6rem;
+    line-height:1.4;
+  }
+
+  body.screen-phone .player-nav{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    padding:10px 14px calc(14px + env(safe-area-inset-bottom));
+  }
+
+  body.screen-phone .player-nav button{
+    width:100%;
+    padding:12px 10px;
+    font-size:0.68rem;
+  }
+
+  body.screen-phone footer{
+    padding:22px 16px 30px;
+  }
+
+  body.screen-phone footer .foot-note{
+    font-size:0.58rem;
+    line-height:1.5;
+  }
+
   /* ---------- FOOTER ---------- */
   footer{ border-top:1px solid var(--hairline); padding:28px 28px 40px; text-align:center; color:var(--ink-faint); font-size:0.82rem; }
   footer img{ width:22px; height:22px; object-fit:contain; opacity:0.5; margin-bottom:10px; filter:grayscale(1); }
@@ -445,7 +652,7 @@
       <button class="player-close" id="playerClose" type="button" aria-label="Close">×</button>
     </div>
     <div class="player-frame">
-      <iframe id="playerIframe" src="" allow="fullscreen" allowfullscreen title="Meditation player"></iframe>
+      <iframe id="playerIframe" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen title="Meditation player"></iframe>
     </div>
     <div class="player-info">
       <span class="player-num mono" id="playerNum"></span>
@@ -484,6 +691,33 @@ let PLAYLIST_ORDER = []; // unique playlist names, order of first appearance
 let activeTag = 'ALL';
 let searchTerm = '';
 let currentFilteredList = []; // list currently shown in the modal's prev/next context
+
+
+const PHONE_BP = 640;
+const TABLET_BP = 1024;
+let screenModeTimer = null;
+
+function applyScreenMode(){
+  const w = window.innerWidth;
+  document.body.classList.remove('screen-phone', 'screen-tablet', 'screen-desktop');
+  if(w <= PHONE_BP){
+    document.body.classList.add('screen-phone');
+  }else if(w <= TABLET_BP){
+    document.body.classList.add('screen-tablet');
+  }else{
+    document.body.classList.add('screen-desktop');
+  }
+}
+
+applyScreenMode();
+window.addEventListener('resize', ()=>{
+  clearTimeout(screenModeTimer);
+  screenModeTimer = setTimeout(applyScreenMode, 80);
+});
+window.addEventListener('orientationchange', ()=>{
+  clearTimeout(screenModeTimer);
+  screenModeTimer = setTimeout(applyScreenMode, 80);
+});
 
 const grid = document.getElementById('catalogGrid');
 const tagFiltersEl = document.getElementById('tagFilters');
