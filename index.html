@@ -354,27 +354,27 @@
   }
 
   body.screen-phone .nav-bar{
-    flex-wrap:wrap;
-    justify-content:center;
-    padding:10px 14px 12px;
-    gap:10px;
-  }
-
-  body.screen-phone .nav-brand{
-    width:100%;
-    justify-content:center;
-  }
-
-  body.screen-phone .nav-links{
-    width:100%;
-    justify-content:center;
-    flex-wrap:wrap;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+    padding:10px 12px;
     gap:6px;
   }
 
+  body.screen-phone .nav-brand{
+    flex:0 0 auto;
+  }
+
+  body.screen-phone .nav-links{
+    flex:0 1 auto;
+    justify-content:flex-end;
+    flex-wrap:nowrap;
+    gap:2px;
+  }
+
   body.screen-phone .nav-links button{
-    padding:7px 10px;
-    font-size:0.8rem;
+    padding:7px 8px;
+    font-size:0.74rem;
+    white-space:nowrap;
   }
 
   body.screen-phone .disclaimer-strip{
