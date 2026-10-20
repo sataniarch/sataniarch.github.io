@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Satania Archive — The Light and The Darkness</title>
 <link rel="icon" href="assets/satania-logo.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,16 +65,35 @@
 
   .nav-bar{
     position:sticky; top:0; z-index:100;
-    display:flex; align-items:center; justify-content:space-between;
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
     gap:16px; padding:12px 28px;
     background:rgba(7,7,7,0.92);
     backdrop-filter:blur(6px);
     border-bottom:1px solid var(--hairline);
   }
-  .nav-brand{ display:flex; align-items:center; gap:12px; }
+  .nav-brand{ display:flex; align-items:center; gap:12px; justify-self:start; }
   .nav-logo{ width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 4px rgba(255,255,255,0.25)); }
   .nav-brand span{ font-family:'Forum', serif; letter-spacing:0.14em; font-size:1.05rem; color:var(--ink); }
-  .nav-links{ display:flex; gap:6px; }
+  .nav-links{ display:flex; gap:6px; justify-self:end; }
+
+  /* ---------- VIDEO SOURCE SWITCH (Default / GDrive) ---------- */
+  .source-switch{
+    display:inline-flex; border:1px solid var(--hairline); background:var(--panel);
+    justify-self:center;
+  }
+  .source-switch button{
+    background:none; border:0; color:var(--ink-dim);
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.08em;
+    text-transform:uppercase; padding:8px 14px; white-space:nowrap;
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .source-switch button + button{ border-left:1px solid var(--hairline); }
+  .source-switch button:hover{ color:var(--ink); }
+  .source-switch button.active{ background:var(--white); color:#0a0a0a; }
+  .source-switch button:focus-visible{ outline-offset:-2px; }
+
+  /* ---------- BOTTOM NAV (phones only) ---------- */
+  .bottom-nav{ display:none; }
   .nav-links button{
     background:none; border:1px solid transparent; color:var(--ink-dim);
     font-size:0.95rem; letter-spacing:0.06em; padding:8px 16px;
@@ -303,8 +322,21 @@
     font-size:1.2rem; line-height:1;
   }
   .player-close:hover{border-color:var(--white);}
-  .player-frame{ width:100%; aspect-ratio:16/9; background:#000; }
-  .player-frame iframe{width:100%; height:100%; border:0;}
+  .player-frame{ width:100%; aspect-ratio:16/9; background:#000; position:relative; }
+  .player-frame iframe, .player-frame video{ width:100%; height:100%; border:0; display:block; background:#000; }
+  .player-frame video{ object-fit:contain; }
+  .player-frame [hidden]{ display:none !important; }
+  .player-error{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; gap:14px; padding:20px; text-align:center;
+    background:rgba(0,0,0,0.88); color:var(--ink-dim); font-size:0.95rem; z-index:2;
+  }
+  .player-error button{
+    background:none; border:1px solid var(--ink-faint); color:var(--ink);
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
+    text-transform:uppercase; padding:9px 16px;
+  }
+  .player-error button:hover{ border-color:var(--white); }
   .player-info{ padding:18px 22px 6px; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
   .player-info .player-num{ font-family:'JetBrains Mono', monospace; color:var(--ink-dim); font-size:0.8rem; }
   .player-info h3{ margin:0; font-size:1.2rem; }
@@ -353,28 +385,55 @@
     max-height:150px;
   }
 
+  body.screen-phone{
+    padding-bottom:calc(60px + env(safe-area-inset-bottom));
+  }
+
   body.screen-phone .nav-bar{
-    flex-wrap:nowrap;
-    justify-content:space-between;
     padding:10px 12px;
     gap:6px;
   }
 
+  /* tabs move to the bottom bar on phones */
+  body.screen-phone .nav-links{ display:none; }
+
+  body.screen-phone .source-switch button{
+    padding:7px 14px;
+    font-size:0.7rem;
+  }
+
+  body.screen-phone .bottom-nav{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    position:fixed; left:0; right:0; bottom:0; z-index:200;
+    background:rgba(7,7,7,0.96);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border-top:1px solid var(--hairline);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  body.screen-phone .bottom-nav button{
+    background:none; border:0; color:var(--ink-faint);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:3px; height:56px; padding:6px 4px 5px; position:relative;
+    font-family:'JetBrains Mono', monospace; font-size:0.6rem;
+    letter-spacing:0.1em; text-transform:uppercase;
+    -webkit-tap-highlight-color:transparent;
+    transition:color 0.2s ease;
+  }
+  body.screen-phone .bottom-nav button svg{
+    width:22px; height:22px; fill:none; stroke:currentColor;
+    stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
+  }
+  body.screen-phone .bottom-nav button.active{ color:var(--white); }
+  body.screen-phone .bottom-nav button.active::before{
+    content:""; position:absolute; top:0; left:50%; width:28px; height:2px;
+    margin-left:-14px; background:var(--white);
+  }
+  body.screen-phone .bottom-nav button:focus-visible{ outline-offset:-3px; }
+
   body.screen-phone .nav-brand{
     flex:0 0 auto;
-  }
-
-  body.screen-phone .nav-links{
-    flex:0 1 auto;
-    justify-content:flex-end;
-    flex-wrap:nowrap;
-    gap:2px;
-  }
-
-  body.screen-phone .nav-links button{
-    padding:7px 8px;
-    font-size:0.74rem;
-    white-space:nowrap;
   }
 
   body.screen-phone .disclaimer-strip{
@@ -485,7 +544,8 @@
     min-height:56svh;
   }
 
-  body.screen-phone .player-frame iframe{
+  body.screen-phone .player-frame iframe,
+  body.screen-phone .player-frame video{
     height:100%;
   }
 
@@ -540,9 +600,14 @@
     text-transform:uppercase; margin-top:6px; color:var(--ink-faint);
   }
 
+  @media (max-width:860px){
+    .nav-brand span{display:none;}
+    body:not(.screen-phone) .nav-links button{ padding:8px 11px; }
+    body:not(.screen-phone) .nav-bar{ gap:10px; }
+  }
+
   @media (max-width:640px){
     body{font-size:16px;}
-    .nav-brand span{display:none;}
     .about-section h1{font-size:1.8rem;}
     .catalog-grid{grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:16px;}
     .playlist-card.all-card{ flex-direction:column; gap:4px; }
@@ -563,6 +628,10 @@
     <div class="nav-brand">
       <img class="nav-logo" src="assets/satania-logo.webp" alt="Satania Archive emblem">
       <span>SATANIA ARCHIVE</span>
+    </div>
+    <div class="source-switch" id="sourceSwitch" role="group" aria-label="Video source">
+      <button type="button" data-source="default" class="active" aria-pressed="true">Default</button>
+      <button type="button" data-source="gdrive" aria-pressed="false">GDrive</button>
     </div>
     <div class="nav-links">
       <button data-tab="archive" class="active" type="button">Archive</button>
@@ -652,7 +721,12 @@
       <button class="player-close" id="playerClose" type="button" aria-label="Close">×</button>
     </div>
     <div class="player-frame">
-      <iframe id="playerIframe" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen title="Meditation player"></iframe>
+      <iframe id="playerIframe" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen title="Meditation player" hidden></iframe>
+      <video id="playerVideo" controls playsinline preload="metadata" controlslist="nodownload" hidden></video>
+      <div class="player-error" id="playerError" hidden>
+        <span>This video could not be loaded from the web archive.</span>
+        <button type="button" id="errorFallbackBtn">Try GDrive</button>
+      </div>
     </div>
     <div class="player-info">
       <span class="player-num mono" id="playerNum"></span>
@@ -668,6 +742,21 @@
   </div>
 </div>
 
+<nav class="bottom-nav" aria-label="Sections">
+  <button data-tab="archive" class="active" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+    <span>Archive</span>
+  </button>
+  <button data-tab="playlists" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11"/><path d="M4 11h11"/><path d="M4 16h6"/><path d="M18 14v6l4-3z"/></svg>
+    <span>Playlists</span>
+  </button>
+  <button data-tab="about" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.8" r="0.6" fill="currentColor"/></svg>
+    <span>About</span>
+  </button>
+</nav>
+
 <footer>
   <img src="assets/satania-logo.webp" alt="">
   <div>Satania Archive · A vault of darkness and light</div>
@@ -678,6 +767,12 @@
 
 const FALLBACK_MARK = "assets/satania-logo.webp";
 const DATA_URL = "meditations.json";
+const WEBARCHIVE_URL = "webarchive.json";   // { id, title, url } — matched to meditations.json by id
+
+/* Video source: 'default' = Web Archive (direct mp4), 'gdrive' = Google Drive embed.
+   Applies to every way of opening a video (cards, playlists, search, prev/next). */
+let videoSource = 'default';
+let WEBARCHIVE_URLS = {};   // id -> direct mp4 url
 
 /* Playlists featured as quick-filter chips on the Archive tab.
    The full list of all playlists lives in the Playlists tab. */
@@ -737,13 +832,27 @@ function escapeHtml(str){
 }
 
 function localThumb(num){ return `assets/thumbs/${String(num).padStart(3,'0')}.webp`; }
+function archiveUrl(id){ return WEBARCHIVE_URLS[id] || null; }
 function drivePreview(id){ return `https://drive.google.com/file/d/${id}/preview`; }
 
 async function loadData(){
   try{
-    const res = await fetch(DATA_URL);
+    const [res, waRes] = await Promise.all([
+      fetch(DATA_URL),
+      fetch(WEBARCHIVE_URL).catch(()=> null)
+    ]);
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const raw = await res.json();
+
+    // Web Archive links are optional: if the file is missing, videos fall back to GDrive.
+    WEBARCHIVE_URLS = {};
+    try{
+      if(waRes && waRes.ok){
+        (await waRes.json()).forEach(w => { if(w && w.id && w.url) WEBARCHIVE_URLS[w.id] = w.url; });
+      }else{
+        console.warn('webarchive.json not available — using GDrive for all videos.');
+      }
+    }catch(e){ console.warn('Failed to parse webarchive.json:', e); }
     MEDITATIONS = raw.map((m, i) => ({...m, num: i + 1}));
 
     const seen = new Set();
@@ -887,6 +996,8 @@ searchInput.addEventListener('input', (e)=>{
 /* ---------- player modal (navigates within the currently filtered list) ---------- */
 const modal = document.getElementById('playerModal');
 const iframe = document.getElementById('playerIframe');
+const video = document.getElementById('playerVideo');
+const playerError = document.getElementById('playerError');
 const playerNum = document.getElementById('playerNum');
 const playerTitle = document.getElementById('playerTitle');
 const playerPlists = document.getElementById('playerPlists');
@@ -902,7 +1013,7 @@ function openPlayerByNum(num){
 function openPlayerAtPos(pos){
   currentPos = pos;
   const m = currentFilteredList[pos];
-  iframe.src = drivePreview(m.id);
+  loadVideo(m);
   playerNum.textContent = `No. ${String(m.num).padStart(3,'0')}`;
   playerTitle.textContent = m.title;
   playerPlists.textContent = (m.playlists||[]).join(' · ');
@@ -911,9 +1022,41 @@ function openPlayerAtPos(pos){
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+function stopMedia(){
+  iframe.src = '';
+  video.pause();
+  video.removeAttribute('src');
+  video.load();
+}
+function loadVideo(m){
+  stopMedia();
+  playerError.hidden = true;
+  const direct = videoSource === 'default' ? archiveUrl(m.id) : null;
+  if(direct){
+    // Web Archive: plain mp4 in a native player
+    iframe.hidden = true;
+    video.hidden = false;
+    video.src = direct;
+    const p = video.play();
+    if(p && p.catch) p.catch(()=>{});   // autoplay may be blocked; controls stay available
+  }else{
+    // GDrive (or no archive link for this entry): Drive embed
+    video.hidden = true;
+    iframe.hidden = false;
+    iframe.src = drivePreview(m.id);
+  }
+}
+video.addEventListener('error', ()=>{
+  if(video.getAttribute('src')) playerError.hidden = false;
+});
+document.getElementById('errorFallbackBtn').addEventListener('click', ()=>{
+  setVideoSource('gdrive');
+  if(currentPos !== null) loadVideo(currentFilteredList[currentPos]);
+});
 function closePlayer(){
   modal.classList.remove('open');
-  iframe.src = '';
+  stopMedia();
+  playerError.hidden = true;
   document.body.style.overflow = '';
 }
 document.getElementById('playerClose').addEventListener('click', closePlayer);
@@ -929,12 +1072,27 @@ nextBtn.addEventListener('click', ()=>{ if(currentPos < currentFilteredList.leng
 
 /* ---------- tabs ---------- */
 function switchTab(name){
-  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('[data-tab]').forEach(b=>{
+    if(b.matches('button')) b.classList.toggle('active', b.dataset.tab===name);
+  });
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id===name));
   window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
 }
-document.querySelectorAll('.nav-links button').forEach(btn=>{
+document.querySelectorAll('.nav-links button, .bottom-nav button').forEach(btn=>{
   btn.addEventListener('click', ()=> switchTab(btn.dataset.tab));
+});
+
+/* ---------- video source switch ---------- */
+function setVideoSource(src){
+  videoSource = src;
+  document.querySelectorAll('#sourceSwitch button').forEach(b=>{
+    const on = b.dataset.source === src;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+document.querySelectorAll('#sourceSwitch button').forEach(btn=>{
+  btn.addEventListener('click', ()=> setVideoSource(btn.dataset.source));
 });
 
 /* ---------- copy-to-clipboard (Proton Email row) ---------- */
