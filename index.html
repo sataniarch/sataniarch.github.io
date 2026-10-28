@@ -2,1138 +2,450 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Satania Archive — The Light and The Darkness</title>
+<meta name="description" content="Independent fan-run archive of Satania's meditations, preserved after the original channel was blocked.">
+<meta name="theme-color" content="#070707">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://sataniarch.github.io/">
 <link rel="icon" href="assets/satania-logo.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Forum&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --void:#070707;
-    --panel:#121212;
-    --panel-raised:#191919;
-    --hairline:#2c2c2c;
-    --ink:#f4f2ec;
-    --ink-dim:#9a978f;
-    --ink-faint:#5c5a54;
-    --white:#ffffff;
-    --white-soft: rgba(255,255,255,0.35);
-  }
-
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--void);
-    color:var(--ink);
-    font-family:'EB Garamond', Georgia, serif;
-    font-size:18px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-    position:relative;
-  }
-
-  body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:999;
-    opacity:0.05;
-    mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  }
-
-  h1,h2,h3,.display{
-    font-family:'Forum', Georgia, serif;
-    font-weight:400;
-    letter-spacing:0.04em;
-    color:var(--ink);
-  }
-  .mono{ font-family:'JetBrains Mono', monospace; }
-  a{color:var(--ink);}
-  button{ font-family:'EB Garamond', serif; cursor:pointer; }
-
-  /* ---------- HEADER ---------- */
-  .site-header{ position:relative; border-bottom:1px solid var(--hairline); }
-  .banner-wrap{ width:100%; overflow:hidden; line-height:0; max-height:220px; }
-  .banner-img{
-    width:100%; height:100%; object-fit:cover; object-position:center 35%;
-    display:block; filter:saturate(0) contrast(1.05);
-  }
-
-  .nav-bar{
-    position:sticky; top:0; z-index:100;
-    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
-    gap:16px; padding:12px 28px;
-    background:rgba(7,7,7,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--hairline);
-  }
-  .nav-brand{ display:flex; align-items:center; gap:12px; justify-self:start; }
-  .nav-logo{ width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 4px rgba(255,255,255,0.25)); }
-  .nav-brand span{ font-family:'Forum', serif; letter-spacing:0.14em; font-size:1.05rem; color:var(--ink); }
-  .nav-links{ display:flex; gap:6px; justify-self:end; }
-
-  /* ---------- VIDEO SOURCE SWITCH (Default / GDrive) ---------- */
-  .source-switch{
-    display:inline-flex; border:1px solid var(--hairline); background:var(--panel);
-    justify-self:center;
-  }
-  .source-switch button{
-    background:none; border:0; color:var(--ink-dim);
-    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.08em;
-    text-transform:uppercase; padding:8px 14px; white-space:nowrap;
-    transition:background 0.2s ease, color 0.2s ease;
-  }
-  .source-switch button + button{ border-left:1px solid var(--hairline); }
-  .source-switch button:hover{ color:var(--ink); }
-  .source-switch button.active{ background:var(--white); color:#0a0a0a; }
-  .source-switch button:focus-visible{ outline-offset:-2px; }
-
-  /* ---------- BOTTOM NAV (phones only) ---------- */
-  .bottom-nav{ display:none; }
-  .nav-links button{
-    background:none; border:1px solid transparent; color:var(--ink-dim);
-    font-size:0.95rem; letter-spacing:0.06em; padding:8px 16px;
-    transition:color 0.25s ease, border-color 0.25s ease;
-  }
-  .nav-links button:hover{color:var(--ink);}
-  .nav-links button.active{ color:var(--white); border-color:var(--ink-faint); }
-  .nav-links button:focus-visible, button:focus-visible, input:focus-visible{
-    outline:2px solid var(--white); outline-offset:2px;
-  }
-
-  .disclaimer-strip{
-    text-align:center; font-family:'JetBrains Mono', monospace;
-    font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase;
-    color:var(--ink-faint); padding:7px 12px;
-    background:var(--panel); border-bottom:1px solid var(--hairline);
-  }
-  .disclaimer-strip .sep{color:var(--ink-faint); margin:0 10px; opacity:0.5;}
-
-  /* ---------- MAIN LAYOUT ---------- */
-  main{ max-width:1180px; margin:0 auto; padding:0 28px; }
-  .tab-panel{display:none; animation:fadeIn 0.4s ease;}
-  .tab-panel.active{display:block;}
-  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
-
-  /* ---------- ARCHIVE TOOLBAR ---------- */
-  .archive-toolbar{
-    display:flex; flex-wrap:wrap; align-items:center; gap:18px;
-    padding:36px 0 18px; margin-bottom:8px;
-  }
-  #searchInput{
-    background:var(--panel); border:1px solid var(--hairline); color:var(--ink);
-    padding:10px 14px; font-family:'EB Garamond', serif; font-style:italic;
-    font-size:1rem; min-width:240px; flex:1 1 240px;
-  }
-  #searchInput::placeholder{color:var(--ink-faint);}
-  .tag-filters{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
-  .tag-chip{
-    background:none; border:1px solid var(--hairline); color:var(--ink-dim);
-    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.08em;
-    text-transform:uppercase; padding:7px 12px; transition:all 0.2s ease; white-space:nowrap;
-  }
-  .tag-chip:hover{border-color:var(--ink-faint); color:var(--ink);}
-  .tag-chip.active{ background:var(--white); border-color:var(--white); color:#0a0a0a; }
-  .tag-chip.more{ color:var(--ink-faint); border-style:dashed; }
-  .tag-chip.more:hover{ color:var(--ink); }
-
-  .status-line{
-    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    font-family:'JetBrains Mono', monospace; font-size:0.72rem;
-    letter-spacing:0.05em; color:var(--ink-faint);
-    padding:14px 0; border-bottom:1px solid var(--hairline); margin-bottom:32px;
-  }
-  .status-line strong{ color:var(--ink); font-weight:500; }
-  .status-line button{
-    background:none; border:1px solid var(--hairline); color:var(--ink-dim);
-    font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:0.05em;
-    padding:4px 9px; text-transform:uppercase;
-  }
-  .status-line button:hover{ border-color:var(--white); color:var(--ink); }
-
-  /* ---------- CATALOG GRID ---------- */
-  .catalog-grid{
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
-    gap:26px; padding-bottom:64px;
-  }
-  .card{
-    background:var(--panel); border:1px solid var(--hairline); position:relative;
-    display:flex; flex-direction:column;
-    transition:border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .card:hover{
-    border-color:var(--ink-faint); transform:translateY(-3px);
-    box-shadow:0 12px 28px rgba(0,0,0,0.55), 0 0 0 1px var(--white-soft);
-  }
-  .card .thumb{
-    position:relative; aspect-ratio:16/9; width:100%;
-    background:
-      radial-gradient(ellipse at center, rgba(255,255,255,0.06), transparent 70%),
-      repeating-linear-gradient(135deg, #161616 0px, #161616 2px, #0d0d0d 2px, #0d0d0d 4px);
-    display:flex; align-items:center; justify-content:center; overflow:hidden;
-  }
-  .card .thumb img{ width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
-  .card .thumb .fallback-mark{ width:34px; height:34px; opacity:0.3; filter:grayscale(1) brightness(1.6); }
-  .card .thumb .play-glyph{
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    background:rgba(7,7,7,0); transition:background 0.25s ease;
-  }
-  .card:hover .play-glyph{background:rgba(7,7,7,0.35);}
-  .card .play-glyph svg{ opacity:0; transform:scale(0.85); transition:all 0.25s ease; }
-  .card:hover .play-glyph svg{opacity:1; transform:scale(1);}
-  .card .num{
-    position:absolute; top:8px; left:8px; font-family:'JetBrains Mono', monospace;
-    font-size:0.68rem; letter-spacing:0.05em; color:var(--ink);
-    background:rgba(7,7,7,0.75); padding:3px 7px; border:1px solid var(--ink-faint); z-index:2;
-  }
-  .card .body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
-  .card .title{
-    font-family:'Forum', serif; font-size:1.02rem; letter-spacing:0.02em;
-    color:var(--ink); line-height:1.32;
-  }
-  .card .meta{
-    display:flex; flex-wrap:wrap; gap:6px; align-items:center;
-    font-family:'JetBrains Mono', monospace; font-size:0.66rem; letter-spacing:0.04em;
-    color:var(--ink-faint); margin-top:auto; padding-top:6px;
-  }
-  .card .meta .plist{
-    color:var(--ink-dim); border:1px solid var(--hairline); padding:2px 7px;
-    text-transform:uppercase;
-  }
-  .card-btn{ all:unset; position:absolute; inset:0; z-index:3; }
-
-  .empty-state, .loading-state{ text-align:center; color:var(--ink-faint); font-style:italic; padding:60px 0; }
-  .loading-state.hidden, .empty-state[hidden]{ display:none; }
-
-  /* ---------- PLAYLISTS TAB ---------- */
-  .playlists-intro{ padding:36px 0 8px; }
-  .playlists-intro p{ color:var(--ink-dim); max-width:640px; }
-  .playlist-grid{
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-    gap:16px; padding:24px 0 64px;
-  }
-  .playlist-card{
-    all:unset; cursor:pointer;
-    background:var(--panel); border:1px solid var(--hairline);
-    padding:20px 20px 18px; display:flex; flex-direction:column; gap:10px;
-    transition:all 0.25s ease;
-  }
-  .playlist-card:hover{ border-color:var(--white-soft); transform:translateY(-2px); }
-  .playlist-card.all-card{
-    grid-column:1 / -1; flex-direction:row; align-items:baseline; justify-content:space-between;
-    border-color:var(--ink-faint); background:var(--panel-raised);
-  }
-  .playlist-card .p-index{ font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:var(--ink-faint); letter-spacing:0.1em; }
-  .playlist-card .p-name{ font-family:'Forum', serif; font-size:1.15rem; color:var(--ink); }
-  .playlist-card.all-card .p-name{ font-size:1.4rem; }
-  .playlist-card .p-count{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--ink-faint); letter-spacing:0.05em; }
-
-  /* ---------- ABOUT ---------- */
-  .about-section{ padding:56px 0 80px; text-align:center; }
-  .about-sigil{ width:230px; height:230px; margin:0 auto 18px; position:relative; }
-  .about-sigil svg{width:100%; height:100%; overflow:visible;}
-  .sigil-ring{ animation:spin 90s linear infinite; transform-origin:center; }
-  .sigil-ring text{ fill:var(--ink-faint); font-family:'JetBrains Mono', monospace; font-size:7.6px; letter-spacing:2px; }
-  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
-  .about-emblem{
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:96px; height:96px; object-fit:contain; animation:flicker 5s ease-in-out infinite;
-  }
-  @keyframes flicker{
-    0%, 100%{ filter:drop-shadow(0 0 6px rgba(255,255,255,0.28)) drop-shadow(0 0 16px rgba(255,255,255,0.12)); }
-    45%{ filter:drop-shadow(0 0 10px rgba(255,255,255,0.45)) drop-shadow(0 0 26px rgba(255,255,255,0.2)); }
-    60%{ filter:drop-shadow(0 0 4px rgba(255,255,255,0.2)) drop-shadow(0 0 12px rgba(255,255,255,0.08)); }
-  }
-  .about-section h1{ font-size:2.3rem; letter-spacing:0.1em; margin:8px 0 4px; }
-  .about-tagline{
-    font-family:'JetBrains Mono', monospace; font-size:0.78rem; letter-spacing:0.28em;
-    text-transform:uppercase; color:var(--ink-faint); margin-bottom:40px;
-  }
-  .about-copy{ max-width:640px; margin:0 auto 40px; text-align:left; color:var(--ink-dim); font-size:1.08rem; }
-  .about-copy p{margin:0 0 18px;}
-  .about-copy p:last-child{margin-bottom:0;}
-  .about-copy strong{color:var(--ink); font-weight:600;}
-  .disclaimer-box{
-    max-width:640px; margin:0 auto; text-align:left; background:var(--panel);
-    border:1px solid var(--hairline); border-left:3px solid var(--white); padding:22px 26px;
-  }
-  .disclaimer-box .label{
-    font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:0.2em;
-    text-transform:uppercase; color:var(--ink); margin-bottom:10px; display:block;
-  }
-  .disclaimer-box p{ font-style:italic; color:var(--ink); margin:0; }
-
-  .elsewhere{
-    max-width:640px; margin:28px auto 0; text-align:left;
-  }
-  .elsewhere .label{
-    font-family:'JetBrains Mono', monospace; font-size:0.68rem; letter-spacing:0.2em;
-    text-transform:uppercase; color:var(--ink-faint); margin-bottom:14px; display:block;
-  }
-  .elsewhere-list{
-    display:flex; flex-direction:column; gap:10px;
-  }
-  .elsewhere-list a, .elsewhere-list button.copy-row{
-    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
-    text-decoration:none; color:var(--ink-dim); background:none; border:0;
-    border-bottom:1px solid var(--hairline);
-    font-family:'JetBrains Mono', monospace; font-size:0.85rem; letter-spacing:0.03em;
-    padding:10px 0; width:100%; text-align:left; position:relative;
-    transition:color 0.2s ease, padding-left 0.2s ease;
-  }
-  .elsewhere-list a:hover, .elsewhere-list button.copy-row:hover{ color:var(--ink); padding-left:6px; }
-  .elsewhere-list a .platform, .elsewhere-list button.copy-row .platform{
-    color:var(--ink); text-transform:uppercase; letter-spacing:0.12em; font-size:0.72rem;
-    min-width:88px;
-  }
-  .elsewhere-list a .url, .elsewhere-list button.copy-row .url{ color:var(--ink-faint); word-break:break-all; }
-  .elsewhere-list a:hover .url, .elsewhere-list button.copy-row:hover .url{ color:var(--ink-dim); }
-
-  .copy-row .copied-toast{
-    position:absolute; top:100%; right:0; margin-top:4px;
-    background:var(--white); color:#0a0a0a;
-    font-family:'JetBrains Mono', monospace; font-size:0.62rem; letter-spacing:0.08em;
-    text-transform:uppercase; padding:4px 9px; z-index:2;
-    opacity:0; transform:translateY(-4px);
-    pointer-events:none; transition:opacity 0.15s ease, transform 0.15s ease;
-  }
-  .copy-row .copied-toast.show{ opacity:1; transform:translateY(0); }
-
-  /* ---------- PLAYER MODAL ---------- */
-  .player-modal{
-    display:none; position:fixed; inset:0; z-index:500;
-    background:rgba(3,3,3,0.9); align-items:center; justify-content:center; padding:24px;
-  }
-  .player-modal.open{display:flex;}
-  .player-panel{
-    background:var(--panel); border:1px solid var(--ink-faint); max-width:920px;
-    width:100%; max-height:90vh; max-height:90dvh; overflow:auto; position:relative;
-  }
-  .player-header{
-    display:flex; justify-content:flex-end; padding:8px 8px 0;
-  }
-  .player-close{
-    background:rgba(7,7,7,0.8);
-    border:1px solid var(--hairline); color:var(--ink); width:34px; height:34px;
-    font-size:1.2rem; line-height:1;
-  }
-  .player-close:hover{border-color:var(--white);}
-  .player-frame{ width:100%; aspect-ratio:16/9; background:#000; position:relative; }
-  .player-frame iframe, .player-frame video{ width:100%; height:100%; border:0; display:block; background:#000; }
-  .player-frame video{ object-fit:contain; }
-  .player-frame [hidden]{ display:none !important; }
-  .player-error{
-    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
-    justify-content:center; gap:14px; padding:20px; text-align:center;
-    background:rgba(0,0,0,0.88); color:var(--ink-dim); font-size:0.95rem; z-index:2;
-  }
-  .player-error button{
-    background:none; border:1px solid var(--ink-faint); color:var(--ink);
-    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
-    text-transform:uppercase; padding:9px 16px;
-  }
-  .player-error button:hover{ border-color:var(--white); }
-  .player-info{ padding:18px 22px 6px; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
-  .player-info .player-num{ font-family:'JetBrains Mono', monospace; color:var(--ink-dim); font-size:0.8rem; }
-  .player-info h3{ margin:0; font-size:1.2rem; }
-  .player-info .player-plists{ font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:var(--ink-faint); letter-spacing:0.05em; }
-  .player-nav{ display:flex; justify-content:space-between; padding:12px 22px 22px; gap:12px; }
-  .player-nav button{
-    background:none; border:1px solid var(--hairline); color:var(--ink-dim);
-    font-family:'JetBrains Mono', monospace; font-size:0.75rem; letter-spacing:0.06em;
-    text-transform:uppercase; padding:9px 16px; transition:all 0.2s ease;
-  }
-  .player-nav button:hover:not(:disabled){border-color:var(--ink-faint); color:var(--ink);}
-  .player-nav button:disabled{opacity:0.3; cursor:default;}
-
-  @media (max-width:640px){
-    .player-modal{ padding:6px; }
-    .player-header{ padding:6px 6px 0; }
-    .player-info{ padding:14px 16px 4px; }
-    .player-nav{ padding:10px 16px 16px; }
-  }
-
-
-  /* ---------- RESPONSIVE SCREEN MODES ---------- */
-  body.screen-desktop {}
-
-  body.screen-tablet main{
-    padding-left:20px;
-    padding-right:20px;
-  }
-
-  body.screen-tablet .nav-bar{
-    padding-left:20px;
-    padding-right:20px;
-  }
-
-  body.screen-tablet .catalog-grid{
-    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-    gap:22px;
-  }
-
-  body.screen-phone main{
-    padding-left:14px;
-    padding-right:14px;
-  }
-
-  body.screen-phone .banner-wrap{
-    max-height:150px;
-  }
-
-  body.screen-phone{
-    padding-bottom:calc(60px + env(safe-area-inset-bottom));
-  }
-
-  body.screen-phone .nav-bar{
-    padding:10px 12px;
-    gap:6px;
-  }
-
-  /* tabs move to the bottom bar on phones */
-  body.screen-phone .nav-links{ display:none; }
-
-  body.screen-phone .source-switch button{
-    padding:7px 14px;
-    font-size:0.7rem;
-  }
-
-  body.screen-phone .bottom-nav{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    position:fixed; left:0; right:0; bottom:0; z-index:200;
-    background:rgba(7,7,7,0.96);
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    border-top:1px solid var(--hairline);
-    padding-bottom:env(safe-area-inset-bottom);
-  }
-  body.screen-phone .bottom-nav button{
-    background:none; border:0; color:var(--ink-faint);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:3px; height:56px; padding:6px 4px 5px; position:relative;
-    font-family:'JetBrains Mono', monospace; font-size:0.6rem;
-    letter-spacing:0.1em; text-transform:uppercase;
-    -webkit-tap-highlight-color:transparent;
-    transition:color 0.2s ease;
-  }
-  body.screen-phone .bottom-nav button svg{
-    width:22px; height:22px; fill:none; stroke:currentColor;
-    stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
-  }
-  body.screen-phone .bottom-nav button.active{ color:var(--white); }
-  body.screen-phone .bottom-nav button.active::before{
-    content:""; position:absolute; top:0; left:50%; width:28px; height:2px;
-    margin-left:-14px; background:var(--white);
-  }
-  body.screen-phone .bottom-nav button:focus-visible{ outline-offset:-3px; }
-
-  body.screen-phone .nav-brand{
-    flex:0 0 auto;
-  }
-
-  body.screen-phone .disclaimer-strip{
-    font-size:0.58rem;
-    line-height:1.5;
-    letter-spacing:0.12em;
-    padding:6px 10px;
-  }
-
-  body.screen-phone .disclaimer-strip .sep{
-    display:none;
-  }
-
-  body.screen-phone .archive-toolbar{
-    padding:24px 0 14px;
-    gap:12px;
-    margin-bottom:0;
-  }
-
-  body.screen-phone #searchInput{
-    min-width:0;
-    width:100%;
-    flex:1 1 100%;
-    font-size:0.95rem;
-  }
-
-  body.screen-phone .tag-filters{
-    width:100%;
-    flex-wrap:nowrap;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    padding-bottom:4px;
-    scrollbar-width:none;
-  }
-
-  body.screen-phone .tag-filters::-webkit-scrollbar{
-    display:none;
-  }
-
-  body.screen-phone .tag-chip{
-    flex:0 0 auto;
-    padding:7px 10px;
-    font-size:0.64rem;
-  }
-
-  body.screen-phone .status-line{
-    margin-bottom:22px;
-    font-size:0.64rem;
-    line-height:1.45;
-  }
-
-  body.screen-phone .catalog-grid{
-    grid-template-columns:1fr;
-    gap:16px;
-    padding-bottom:44px;
-  }
-
-  body.screen-phone .card{
-    border-radius:0;
-  }
-
-  body.screen-phone .card .title{
-    font-size:1.05rem;
-  }
-
-  body.screen-phone .card .meta{
-    gap:5px;
-  }
-
-  body.screen-phone .player-modal{
-    padding:0;
-    align-items:stretch;
-    justify-content:stretch;
-    background:#000;
-  }
-
-  body.screen-phone .player-panel{
-    width:100vw;
-    height:100vh;
-    height:100dvh;
-    max-width:none;
-    max-height:none;
-    overflow:hidden;
-    border:none;
-    display:grid;
-    grid-template-rows:minmax(56svh, 1fr) auto auto;
-    background:var(--panel);
-  }
-
-  body.screen-phone .player-header{
-    position:absolute;
-    top:8px;
-    right:8px;
-    z-index:3;
-    padding:0;
-  }
-
-  body.screen-phone .player-close{
-    width:42px;
-    height:42px;
-    font-size:1.35rem;
-    background:rgba(7,7,7,0.88);
-  }
-
-  body.screen-phone .player-frame{
-    grid-row:1;
-    aspect-ratio:auto;
-    min-height:56svh;
-  }
-
-  body.screen-phone .player-frame iframe,
-  body.screen-phone .player-frame video{
-    height:100%;
-  }
-
-  body.screen-phone .player-info{
-    padding:10px 14px 2px;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:6px;
-  }
-
-  body.screen-phone .player-info h3{
-    font-size:1rem;
-    line-height:1.2;
-  }
-
-  body.screen-phone .player-info .player-num{
-    font-size:0.72rem;
-  }
-
-  body.screen-phone .player-info .player-plists{
-    font-size:0.6rem;
-    line-height:1.4;
-  }
-
-  body.screen-phone .player-nav{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    padding:10px 14px calc(14px + env(safe-area-inset-bottom));
-  }
-
-  body.screen-phone .player-nav button{
-    width:100%;
-    padding:12px 10px;
-    font-size:0.68rem;
-  }
-
-  body.screen-phone footer{
-    padding:22px 16px 30px;
-  }
-
-  body.screen-phone footer .foot-note{
-    font-size:0.58rem;
-    line-height:1.5;
-  }
-
-  /* ---------- FOOTER ---------- */
-  footer{ border-top:1px solid var(--hairline); padding:28px 28px 40px; text-align:center; color:var(--ink-faint); font-size:0.82rem; }
-  footer img{ width:22px; height:22px; object-fit:contain; opacity:0.5; margin-bottom:10px; filter:grayscale(1); }
-  footer .foot-note{
-    font-family:'JetBrains Mono', monospace; font-size:0.66rem; letter-spacing:0.1em;
-    text-transform:uppercase; margin-top:6px; color:var(--ink-faint);
-  }
-
-  @media (max-width:860px){
-    .nav-brand span{display:none;}
-    body:not(.screen-phone) .nav-links button{ padding:8px 11px; }
-    body:not(.screen-phone) .nav-bar{ gap:10px; }
-  }
-
-  @media (max-width:640px){
-    body{font-size:16px;}
-    .about-section h1{font-size:1.8rem;}
-    .catalog-grid{grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:16px;}
-    .playlist-card.all-card{ flex-direction:column; gap:4px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
-  }
-</style>
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Satania Archive">
+<meta property="og:title" content="Satania Archive — The Light and The Darkness">
+<meta property="og:description" content="Independent fan-run archive of Satania's meditations, preserved after the original channel was blocked.">
+<meta property="og:url" content="https://sataniarch.github.io/">
+<meta property="og:image" content="https://sataniarch.github.io/assets/satania-banner.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Satania Archive">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="preload" href="fonts/forum-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/garamond-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/player.css">
+<link rel="stylesheet" href="css/audio.css">
+<link rel="modulepreload" href="js/main.js">
 </head>
 <body>
 
-<header class="site-header">
-  <div class="banner-wrap">
-    <img class="banner-img" src="assets/satania-banner.webp" alt="Satania Archive — Independent Archive, Not Official — The Light and The Darkness">
-  </div>
-  <nav class="nav-bar">
-    <div class="nav-brand">
-      <img class="nav-logo" src="assets/satania-logo.webp" alt="Satania Archive emblem">
-      <span>SATANIA ARCHIVE</span>
-    </div>
-    <div class="source-switch" id="sourceSwitch" role="group" aria-label="Video source">
-      <button type="button" data-source="default" class="active" aria-pressed="true">Default</button>
-      <button type="button" data-source="gdrive" aria-pressed="false">GDrive</button>
-    </div>
-    <div class="nav-links">
-      <button data-tab="archive" class="active" type="button">Archive</button>
-      <button data-tab="playlists" type="button">Playlists</button>
-      <button data-tab="about" type="button">About</button>
-    </div>
-  </nav>
-  <div class="disclaimer-strip">
-    Independent Archive <span class="sep">·</span> Not Official <span class="sep">·</span> Fan-Run Preservation Project
-  </div>
-</header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path d="M6 5v14" /><path d="M19 5.5v13L9 12z" fill="currentColor"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M18 5v14"/><path d="M5 5.5v13L15 12z" fill="currentColor"/></symbol>
+    <symbol id="i-back10" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4.5v4.2h4.2"/><text x="12" y="15.4" text-anchor="middle" font-size="7.5" font-family="JetBrains Mono, monospace" fill="currentColor" stroke="none">10</text></symbol>
+    <symbol id="i-fwd10" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4.5v4.2h-4.2"/><text x="12" y="15.4" text-anchor="middle" font-size="7.5" font-family="JetBrains Mono, monospace" fill="currentColor" stroke="none">10</text></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.7a4.3 4.3 0 0 1 7.5 2.6c0 5.6-7.5 10.2-7.5 10.2z"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4"/><path d="M8 7.5L12 3.5l4 4"/><path d="M5 12v7h14v-7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M8 11.5l4 4 4-4"/><path d="M5 19.5h14"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></symbol>
+    <symbol id="i-speed" viewBox="0 0 24 24"><path d="M4.5 17a8 8 0 1 1 15 0"/><path d="M12 13l4-4.5"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M5 11V9a3 3 0 0 1 3-3h11"/><path d="M16 3l3 3-3 3"/><path d="M19 13v2a3 3 0 0 1-3 3H5"/><path d="M8 21l-3-3 3-3"/></symbol>
+    <symbol id="i-autonext" viewBox="0 0 24 24"><path d="M4 6h10M4 12h10M4 18h6"/><path d="M17 8.5v7l4.5-3.5z" fill="currentColor"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" fill="currentColor"/></symbol>
+    <symbol id="i-fullscreen" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-fs-exit" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+    <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.3-5.4"/><path d="M4.5 4.5v4.3h4.3"/></symbol>
+    <symbol id="i-volume-low" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path d="M15.5 9.5a3.4 3.4 0 0 1 0 5"/></symbol>
+    <symbol id="i-pip" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><rect x="12" y="11" width="7" height="5" fill="currentColor"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+    <symbol id="i-source" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V6"/><path d="M5 12v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M4 6h11M4 11h11M4 16h6"/><path d="M18 14v6l4-3z" fill="currentColor"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+    <symbol id="i-library" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z"/></symbol>
+    <symbol id="i-about" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.8" r="0.6" fill="currentColor"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3.5" y="14" width="4" height="6.5" rx="1.2"/><rect x="16.5" y="14" width="4" height="6.5" rx="1.2"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5H5V6h5"/></symbol>
+  </defs>
+</svg>
 
-<main>
-  <section id="archive" class="tab-panel active">
-    <div class="archive-toolbar">
-      <input type="search" id="searchInput" placeholder="Search meditations…" aria-label="Search the archive">
-      <div class="tag-filters" id="tagFilters"></div>
-    </div>
-    <div class="status-line" id="statusLine"></div>
-    <p class="loading-state" id="loadingState">Opening the vault…</p>
-    <div class="catalog-grid" id="catalogGrid"></div>
-    <p class="empty-state" id="emptyState" hidden>Nothing found. The dark keeps its secrets.</p>
-  </section>
+<a class="skip-link" href="#main">Skip to content</a>
 
-  <section id="playlists" class="tab-panel">
-    <div class="playlists-intro">
-      <h2>Playlists</h2>
-      <p>Meditations grouped by entity, practice, and theme. A meditation may belong to more than one collection. Select a playlist to open it in the Archive.</p>
+<div id="app">
+  <header class="site-header">
+    <div class="banner">
+      <img src="assets/satania-banner.webp" alt="Satania Archive — Independent Archive, Not Official — The Light and The Darkness" fetchpriority="high" decoding="async">
     </div>
-    <div class="playlist-grid" id="playlistGrid"></div>
-  </section>
-
-  <section id="about" class="tab-panel">
-    <div class="about-section">
-      <div class="about-sigil">
-        <svg viewBox="0 0 200 200">
-          <g class="sigil-ring">
-            <defs>
-              <path id="ringPath" d="M 100,100 m -84,0 a 84,84 0 1,1 168,0 a 84,84 0 1,1 -168,0"/>
-            </defs>
-            <text>
-              <textPath href="#ringPath" startOffset="0%">· SOLVE ET COAGULA · AGIOS O LUCIFER · AVE SATANAS · IN NOMINE DIABOLI ·&#160;&#160;&#160;</textPath>
-            </text>
-          </g>
-        </svg>
-        <img class="about-emblem" src="assets/satania-logo.webp" alt="Satania Archive emblem">
+    <nav class="topbar" aria-label="Main">
+      <a class="brand" href="#/" aria-label="Satania Archive, home">
+        <img class="brand__logo" src="assets/satania-logo.webp" alt="" width="34" height="34">
+        <span class="brand__name">SATANIA ARCHIVE</span>
+      </a>
+      <div class="tabs">
+        <a href="#/" data-route="archive">Archive</a>
+        <a href="#/playlists" data-route="playlists">Playlists</a>
+        <a href="#/library" data-route="library">Library</a>
+        <a href="#/about" data-route="about">About</a>
       </div>
-      <h1>SATANIA ARCHIVE</h1>
-      <p class="about-tagline">The Light and The Darkness</p>
-
-      <div class="about-copy">
-        <p><strong>Satania Archive</strong> is an independent, fan-run collection of Satania's meditations — voice, breath, and silence, addressed at once to the light and to the darkness within. We do not create these recordings. We preserve them.</p>
-        <p>Every meditation here is a page pulled from the fire of forgetting. We catalogue them by number, like lines in a grimoire, so what was once spoken can be heard again.</p>
-        <p>The archive is maintained by anonymous keepers from the community. We are not affiliated with the original creator and do not speak on their behalf — we simply guard what could have been lost.</p>
+      <div class="topbar__actions">
+        <button class="icon-btn" type="button" id="openSettings" aria-label="Settings">
+          <svg class="i" aria-hidden="true"><use href="#i-settings"/></svg>
+        </button>
       </div>
+    </nav>
+    <p class="strip">Independent Archive <span class="strip__sep">·</span> Not Official <span class="strip__sep">·</span> Fan-Run Preservation Project</p>
+  </header>
 
-      <div class="disclaimer-box">
-        <span class="label">Note</span>
-        <p>An archive of Satania's meditations. The original channel has been blocked by YouTube. We preserve the legacy. Ave Satanas!</p>
+  <main id="main" tabindex="-1">
+
+    <section id="view-archive" class="view" data-view="archive" hidden>
+      <div class="page-head">
+        <div class="page-head__text">
+          <h1 class="page-title" id="archiveTitle">Archive</h1>
+          <p class="page-sub" id="archiveSub"></p>
+        </div>
+        <button class="btn btn--solid" type="button" id="playAll" hidden>
+          <svg class="i" aria-hidden="true"><use href="#i-play"/></svg><span>Play all</span>
+        </button>
       </div>
+      <div class="toolbar">
+        <div class="search">
+          <svg class="i search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <input type="search" id="searchInput" placeholder="Search meditations…" aria-label="Search the archive" autocomplete="off" enterkeyhint="search" spellcheck="false">
+        </div>
+        <label class="select">
+          <span class="select__label">Sort</span>
+          <select id="sortSelect" aria-label="Sort meditations">
+            <option value="num">Archive order</option>
+            <option value="num-desc">Newest first</option>
+            <option value="title">Title A–Z</option>
+          </select>
+        </label>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Playlists"></div>
+      <div class="status" id="status" role="status"></div>
+      <p class="note" id="loadingState">Opening the vault…</p>
+      <div class="grid" id="grid"></div>
+      <div id="sentinel" aria-hidden="true"></div>
+      <p class="note" id="emptyState" hidden>Nothing found. The dark keeps its secrets.</p>
+    </section>
 
-      <div class="elsewhere">
-        <span class="label">Elsewhere</span>
-        <div class="elsewhere-list">
-          <a href="https://www.youtube.com/@The_Satania_Archive/" target="_blank" rel="noopener noreferrer">
-            <span class="platform">YouTube:</span><span class="url">https://www.youtube.com/@The_Satania_Archive/</span>
-          </a>
-          <a href="https://t.me/The_Satania_Archive" target="_blank" rel="noopener noreferrer">
-            <span class="platform">Telegram:</span><span class="url">https://t.me/The_Satania_Archive</span>
-          </a>
-          <a href="https://rumble.com/c/c-7938906" target="_blank" rel="noopener noreferrer">
-            <span class="platform">Rumble:</span><span class="url">https://rumble.com/c/c-7938906</span>
-          </a>
-          <a href="https://t.me/The_Satania_Archive_Meditations" target="_blank" rel="noopener noreferrer">
-            <span class="platform">Telegram Archive:</span><span class="url">https://t.me/The_Satania_Archive_Meditations</span>
-          </a>
-          <a href="https://archive.org/details/satania_archive" target="_blank" rel="noopener noreferrer">
-            <span class="platform">Internet Archive:</span><span class="url">https://archive.org/details/satania_archive</span>
-          </a>
-          <button type="button" class="copy-row" data-copy="thesatania@proton.me">
-            <span class="platform">Proton Email:</span><span class="url">thesatania@proton.me</span>
-            <span class="copied-toast" aria-live="polite">Copied!</span>
-          </button>
+    <section id="view-playlists" class="view" data-view="playlists" hidden>
+      <div class="page-head">
+        <div class="page-head__text">
+          <h1 class="page-title">Playlists</h1>
+          <p class="page-sub">Meditations grouped by entity, practice, and theme. A meditation may belong to more than one collection.</p>
+        </div>
+        <label class="select">
+          <span class="select__label">Sort</span>
+          <select id="plSort" aria-label="Sort playlists">
+            <option value="order">Archive order</option>
+            <option value="name">Name A–Z</option>
+            <option value="count">Most meditations</option>
+          </select>
+        </label>
+      </div>
+      <div class="pl-grid" id="plGrid"></div>
+    </section>
+
+    <section id="view-library" class="view" data-view="library" hidden>
+      <div class="page-head">
+        <div class="page-head__text">
+          <h1 class="page-title">Library</h1>
+          <p class="page-sub">Your favorites and listening history. Everything is stored on this device only.</p>
         </div>
       </div>
-    </div>
-  </section>
-</main>
+      <div id="libraryBody"></div>
+    </section>
 
-<div class="player-modal" id="playerModal">
-  <div class="player-panel">
-    <div class="player-header">
-      <button class="player-close" id="playerClose" type="button" aria-label="Close">×</button>
-    </div>
-    <div class="player-frame">
-      <iframe id="playerIframe" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen title="Meditation player" hidden></iframe>
-      <video id="playerVideo" controls playsinline preload="metadata" controlslist="nodownload" hidden></video>
-      <div class="player-error" id="playerError" hidden>
-        <span>This video could not be loaded from the web archive.</span>
-        <button type="button" id="errorFallbackBtn">Try GDrive</button>
+    <section id="view-about" class="view" data-view="about" hidden>
+      <div class="about">
+        <div class="sigil">
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <g class="sigil__ring">
+              <defs><path id="ringPath" d="M 100,100 m -84,0 a 84,84 0 1,1 168,0 a 84,84 0 1,1 -168,0"/></defs>
+              <text><textPath href="#ringPath" startOffset="0%">· SOLVE ET COAGULA · AGIOS O LUCIFER · AVE SATANAS · IN NOMINE DIABOLI ·&#160;&#160;&#160;</textPath></text>
+            </g>
+          </svg>
+          <span class="sigil__glow"></span>
+          <img class="sigil__emblem" src="assets/satania-logo.webp" alt="Satania Archive emblem" width="96" height="96" loading="lazy">
+        </div>
+        <h1 class="about__title">SATANIA ARCHIVE</h1>
+        <p class="about__tagline">The Light and The Darkness</p>
+
+        <div class="about__copy">
+          <p><strong>Satania Archive</strong> is an independent, fan-run collection of Satania's meditations — voice, breath, and silence, addressed at once to the light and to the darkness within. We do not create these recordings. We preserve them.</p>
+          <p>Every meditation here is a page pulled from the fire of forgetting. We catalogue them by number, like lines in a grimoire, so what was once spoken can be heard again.</p>
+          <p>The archive is maintained by anonymous keepers from the community. We are not affiliated with the original creator and do not speak on their behalf — we simply guard what could have been lost.</p>
+        </div>
+
+        <div class="notice">
+          <span class="label">Note</span>
+          <p>An archive of Satania's meditations. The original channel has been blocked by YouTube. We preserve the legacy. Ave Satanas!</p>
+        </div>
+
+        <div class="elsewhere">
+          <span class="label">Elsewhere</span>
+          <ul class="elsewhere__list">
+            <li><a href="https://www.youtube.com/@The_Satania_Archive/" target="_blank" rel="noopener noreferrer"><span class="platform">YouTube</span><span class="url">youtube.com/@The_Satania_Archive</span></a></li>
+            <li><a href="https://t.me/The_Satania_Archive" target="_blank" rel="noopener noreferrer"><span class="platform">Telegram</span><span class="url">t.me/The_Satania_Archive</span></a></li>
+            <li><a href="https://rumble.com/c/c-7938906" target="_blank" rel="noopener noreferrer"><span class="platform">Rumble</span><span class="url">rumble.com/c/c-7938906</span></a></li>
+            <li><a href="https://t.me/The_Satania_Archive_Meditations" target="_blank" rel="noopener noreferrer"><span class="platform">Telegram Archive</span><span class="url">t.me/The_Satania_Archive_Meditations</span></a></li>
+            <li><a href="https://archive.org/details/satania_archive" target="_blank" rel="noopener noreferrer"><span class="platform">Internet Archive</span><span class="url">archive.org/details/satania_archive</span></a></li>
+            <li><button type="button" class="copy-row" data-copy="thesatania@proton.me"><span class="platform">Proton Email</span><span class="url">thesatania@proton.me</span><span class="copied">Copied</span></button></li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="player-info">
-      <span class="player-num mono" id="playerNum"></span>
-      <h3 id="playerTitle"></h3>
-    </div>
-    <div class="player-info" style="padding-top:0;">
-      <span class="player-plists" id="playerPlists"></span>
-    </div>
-    <div class="player-nav">
-      <button id="prevBtn" type="button">‹ Prev</button>
-      <button id="nextBtn" type="button">Next ›</button>
-    </div>
-  </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <img src="assets/satania-logo.webp" alt="" width="22" height="22" loading="lazy">
+    <p>Satania Archive · A vault of darkness and light</p>
+    <p class="site-footer__note">Independent fan archive · Preserves Deleted Materials · Not official</p>
+  </footer>
+
+  <nav class="bottom-nav" aria-label="Sections">
+    <a href="#/" data-route="archive"><svg class="i" aria-hidden="true"><use href="#i-archive"/></svg><span>Archive</span></a>
+    <a href="#/playlists" data-route="playlists"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Playlists</span></a>
+    <a href="#/library" data-route="library"><svg class="i" aria-hidden="true"><use href="#i-library"/></svg><span>Library</span></a>
+    <a href="#/about" data-route="about"><svg class="i" aria-hidden="true"><use href="#i-about"/></svg><span>About</span></a>
+  </nav>
 </div>
 
-<nav class="bottom-nav" aria-label="Sections">
-  <button data-tab="archive" class="active" type="button">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
-    <span>Archive</span>
-  </button>
-  <button data-tab="playlists" type="button">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11"/><path d="M4 11h11"/><path d="M4 16h6"/><path d="M18 14v6l4-3z"/></svg>
-    <span>Playlists</span>
-  </button>
-  <button data-tab="about" type="button">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.8" r="0.6" fill="currentColor"/></svg>
-    <span>About</span>
-  </button>
-</nav>
+<section class="player" id="player" data-state="closed" role="dialog" aria-label="Player" hidden>
+  <div class="player__scrim" data-act="minimize"></div>
+  <div class="player__panel">
+    <div class="player__bar" aria-hidden="true"><span id="miniBar"></span></div>
 
-<footer>
-  <img src="assets/satania-logo.webp" alt="">
-  <div>Satania Archive · A vault of darkness and light</div>
-  <div class="foot-note">Independent fan archive · Preserves Deleted Materials · Not official</div>
-</footer>
+    <div class="player__top">
+      <button class="icon-btn" type="button" data-act="minimize" id="btnMinimize" aria-label="Minimize player">
+        <svg class="i" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+      </button>
+      <p class="player__context" id="ctxLabel"></p>
+      <button class="icon-btn" type="button" data-act="close" aria-label="Close player and stop">
+        <svg class="i" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
 
-<script>
+    <div class="player__stage vp" id="stage" data-w="m" data-layout="desk">
+      <video id="media" playsinline webkit-playsinline preload="metadata"></video>
+      <audio id="audio" preload="metadata" hidden></audio>
+      <div class="au" id="au" aria-hidden="true">
+        <span class="au__aura"></span>
+        <span class="au__ring"></span>
+        <span class="au__ring"></span>
+        <span class="au__ring"></span>
+        <img class="au__img" id="auImg" alt="" decoding="async">
+      </div>
+      <iframe id="embed" title="Meditation video" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" hidden></iframe>
 
-const FALLBACK_MARK = "assets/satania-logo.webp";
-const DATA_URL = "meditations.json";
-const WEBARCHIVE_URL = "webarchive.json";   // { id, title, url } — matched to meditations.json by id
+      <div class="vp__tap" id="tap"></div>
 
-/* Video source: 'default' = Web Archive (direct mp4), 'gdrive' = Google Drive embed.
-   Applies to every way of opening a video (cards, playlists, search, prev/next). */
-let videoSource = 'default';
-let WEBARCHIVE_URLS = {};   // id -> direct mp4 url
+      <div class="vp__skip vp__skip--back" id="skipBack" aria-hidden="true">
+        <span class="vp__chev"><i></i><i></i><i></i></span><b>10</b><small>seconds</small>
+      </div>
+      <div class="vp__skip vp__skip--fwd" id="skipFwd" aria-hidden="true">
+        <span class="vp__chev"><i></i><i></i><i></i></span><b>10</b><small>seconds</small>
+      </div>
 
-/* Playlists featured as quick-filter chips on the Archive tab.
-   The full list of all playlists lives in the Playlists tab. */
-const FEATURED_PLAYLISTS = [
-  "Satan", "Lucifer", "Lilith", "Human Soul Transformation",
-  "Angelic Meditations", "Ahrimanic Yoga", "Indian Meditations", "Astro Music Meditations"
-];
+      <div class="vp__ui" id="ui" role="group" aria-label="Player controls">
+        <div class="vp__top">
+          <button class="vp__btn" type="button" data-act="fullscreen" aria-label="Exit full screen"><svg class="i" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+          <div class="vp__title">
+            <span class="vp__num mono" id="vNum"></span>
+            <span class="vp__name" id="vTitle"></span>
+          </div>
+        </div>
 
-let MEDITATIONS = [];   // loaded from JSON, each gets .num assigned by position
-let PLAYLIST_ORDER = []; // unique playlist names, order of first appearance
-let activeTag = 'ALL';
-let searchTerm = '';
-let currentFilteredList = []; // list currently shown in the modal's prev/next context
+        <div class="vp__center">
+          <button class="vp__btn vp__btn--round vp__btn--side" type="button" data-act="prev" aria-label="Previous meditation"><svg class="i" aria-hidden="true"><use href="#i-prev"/></svg></button>
+          <button class="vp__btn vp__btn--round vp__btn--skip" type="button" data-act="back" aria-label="Back 10 seconds"><svg class="i" aria-hidden="true"><use href="#i-back10"/></svg></button>
+          <button class="vp__btn vp__btn--play js-toggle" type="button" data-act="toggle" aria-label="Play"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg></button>
+          <button class="vp__btn vp__btn--round vp__btn--skip" type="button" data-act="fwd" aria-label="Forward 10 seconds"><svg class="i" aria-hidden="true"><use href="#i-fwd10"/></svg></button>
+          <button class="vp__btn vp__btn--round vp__btn--side" type="button" data-act="next" aria-label="Next meditation"><svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button>
+        </div>
 
-
-const PHONE_BP = 640;
-const TABLET_BP = 1024;
-let screenModeTimer = null;
-
-function applyScreenMode(){
-  const w = window.innerWidth;
-  document.body.classList.remove('screen-phone', 'screen-tablet', 'screen-desktop');
-  if(w <= PHONE_BP){
-    document.body.classList.add('screen-phone');
-  }else if(w <= TABLET_BP){
-    document.body.classList.add('screen-tablet');
-  }else{
-    document.body.classList.add('screen-desktop');
-  }
-}
-
-applyScreenMode();
-window.addEventListener('resize', ()=>{
-  clearTimeout(screenModeTimer);
-  screenModeTimer = setTimeout(applyScreenMode, 80);
-});
-window.addEventListener('orientationchange', ()=>{
-  clearTimeout(screenModeTimer);
-  screenModeTimer = setTimeout(applyScreenMode, 80);
-});
-
-const grid = document.getElementById('catalogGrid');
-const tagFiltersEl = document.getElementById('tagFilters');
-const searchInput = document.getElementById('searchInput');
-const emptyState = document.getElementById('emptyState');
-const loadingState = document.getElementById('loadingState');
-const statusLine = document.getElementById('statusLine');
-const playlistGrid = document.getElementById('playlistGrid');
-
-function escapeHtml(str){
-  return String(str)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'",'&#39;');
-}
-
-function localThumb(num){ return `assets/thumbs/${String(num).padStart(3,'0')}.webp`; }
-function archiveUrl(id){ return WEBARCHIVE_URLS[id] || null; }
-function drivePreview(id){ return `https://drive.google.com/file/d/${id}/preview`; }
-
-async function loadData(){
-  try{
-    const [res, waRes] = await Promise.all([
-      fetch(DATA_URL),
-      fetch(WEBARCHIVE_URL).catch(()=> null)
-    ]);
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const raw = await res.json();
-
-    // Web Archive links are optional: if the file is missing, videos fall back to GDrive.
-    WEBARCHIVE_URLS = {};
-    try{
-      if(waRes && waRes.ok){
-        (await waRes.json()).forEach(w => { if(w && w.id && w.url) WEBARCHIVE_URLS[w.id] = w.url; });
-      }else{
-        console.warn('webarchive.json not available — using GDrive for all videos.');
-      }
-    }catch(e){ console.warn('Failed to parse webarchive.json:', e); }
-    MEDITATIONS = raw.map((m, i) => ({...m, num: i + 1}));
-
-    const seen = new Set();
-    PLAYLIST_ORDER = [];
-    MEDITATIONS.forEach(m => (m.playlists||[]).forEach(p => {
-      if(!seen.has(p)){ seen.add(p); PLAYLIST_ORDER.push(p); }
-    }));
-
-    loadingState.classList.add('hidden');
-    buildTagFilters();
-    buildPlaylistTab();
-    renderGrid();
-  }catch(err){
-    loadingState.innerHTML = 'The vault could not be opened.<br>If you are viewing this file directly from disk, browsers block local data loading (CORS). Run a local server or view the page after publishing to GitHub Pages.';
-    console.error('Failed to load meditations.json:', err);
-  }
-}
-
-function buildTagFilters(){
-  const chips = ['ALL', ...FEATURED_PLAYLISTS.filter(p => PLAYLIST_ORDER.includes(p))];
-  tagFiltersEl.innerHTML = chips.map(t =>
-    `<button class="tag-chip ${t===activeTag?'active':''}" data-tag="${escapeHtml(t)}" type="button">${t==='ALL' ? 'All' : escapeHtml(t)}</button>`
-  ).join('') + `<button class="tag-chip more" data-goto-playlists type="button">All Playlists →</button>`;
-
-  tagFiltersEl.querySelectorAll('.tag-chip[data-tag]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      activeTag = btn.dataset.tag;
-      buildTagFilters();
-      renderGrid();
-    });
-  });
-  tagFiltersEl.querySelector('[data-goto-playlists]').addEventListener('click', ()=> switchTab('playlists'));
-}
-
-function buildPlaylistTab(){
-  const counts = {};
-  PLAYLIST_ORDER.forEach(p => counts[p] = MEDITATIONS.filter(m => (m.playlists||[]).includes(p)).length);
-
-  const allCard = `
-    <button class="playlist-card all-card" data-tag="ALL" type="button">
-      <span class="p-name">All</span>
-      <span class="p-count">${MEDITATIONS.length} meditations</span>
-    </button>`;
-
-  const cards = PLAYLIST_ORDER.map((p, i) => `
-    <button class="playlist-card" data-tag="${escapeHtml(p)}" type="button">
-      <span class="p-index mono">Vol. ${String(i+1).padStart(2,'0')}</span>
-      <span class="p-name">${escapeHtml(p)}</span>
-      <span class="p-count mono">${counts[p]} meditation${counts[p]===1?'':'s'}</span>
-    </button>`).join('');
-
-  playlistGrid.innerHTML = allCard + cards;
-  playlistGrid.querySelectorAll('.playlist-card').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      activeTag = btn.dataset.tag;
-      searchTerm = '';
-      searchInput.value = '';
-      buildTagFilters();
-      renderGrid();
-      switchTab('archive');
-    });
-  });
-}
-
-function getFiltered(){
-  const term = searchTerm.trim().toLowerCase();
-  return MEDITATIONS.filter(m=>{
-    const matchesTag = activeTag==='ALL' || (m.playlists||[]).includes(activeTag);
-    if(!matchesTag) return false;
-    if(term === '') return true;
-    const inTitle = m.title.toLowerCase().includes(term);
-    const inPlaylists = (m.playlists||[]).some(p => p.toLowerCase().includes(term));
-    return inTitle || inPlaylists;
-  });
-}
-
-function renderStatusLine(){
-  const total = MEDITATIONS.length;
-  const shown = currentFilteredList.length;
-  const hasFilter = activeTag !== 'ALL';
-  const hasSearch = searchTerm.trim() !== '';
-
-  if(!hasFilter && !hasSearch){
-    statusLine.innerHTML = `<span>${total} meditations in the archive</span>`;
-    return;
-  }
-  let parts = [`<strong>${shown}</strong> of ${total} shown`];
-  if(hasFilter) parts.push(`playlist: <strong>${escapeHtml(activeTag)}</strong>`);
-  if(hasSearch) parts.push(`search: <strong>"${escapeHtml(searchTerm.trim())}"</strong>`);
-  statusLine.innerHTML = parts.join(' &nbsp;·&nbsp; ') + ` <button id="clearFilters" type="button">Reset ✕</button>`;
-  document.getElementById('clearFilters').addEventListener('click', ()=>{
-    activeTag = 'ALL';
-    searchTerm = '';
-    searchInput.value = '';
-    buildTagFilters();
-    renderGrid();
-  });
-}
-
-function renderGrid(){
-  const items = getFiltered();
-  currentFilteredList = items;
-  emptyState.hidden = items.length !== 0;
-  renderStatusLine();
-
-  grid.innerHTML = items.map(m => {
-    const num = String(m.num).padStart(3,'0');
-    const plistChips = (m.playlists||[]).map(p => `<span class="plist">${escapeHtml(p)}</span>`).join('');
-    return `
-    <article class="card">
-      <div class="thumb">
-        <img loading="lazy" src="${localThumb(m.num)}" alt=""
-             onerror="this.style.display='none'; this.parentElement.querySelector('.fallback-mark').style.display='block';">
-        <img class="fallback-mark" style="display:none;" src="${FALLBACK_MARK}" alt="">
-        <span class="num mono">No. ${num}</span>
-        <div class="play-glyph" aria-hidden="true">
-          <svg width="46" height="46" viewBox="0 0 46 46">
-            <circle cx="23" cy="23" r="21" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
-            <path d="M18,14 L32,23 L18,32 Z" fill="#f4f2ec"/>
-          </svg>
+        <div class="vp__bottom">
+          <div class="vp__seekrow">
+            <span class="vp__time mono" id="tCur">0:00</span>
+            <div class="vp__seek" id="seek" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="0:00" aria-disabled="true">
+              <span class="vp__track"><i class="vp__buf"></i><i class="vp__played"></i></span>
+              <span class="vp__thumb"></span>
+              <span class="vp__tip mono" id="seekTip" aria-hidden="true">0:00</span>
+            </div>
+            <span class="vp__time mono" id="tDur">0:00</span>
+          </div>
+          <div class="vp__row">
+            <div class="vp__grp">
+              <button class="vp__btn vp__bar-only" type="button" data-act="prev" aria-label="Previous meditation"><svg class="i" aria-hidden="true"><use href="#i-prev"/></svg></button>
+              <button class="vp__btn vp__bar-only js-toggle" type="button" data-act="toggle" aria-label="Play"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg></button>
+              <button class="vp__btn vp__bar-only" type="button" data-act="next" aria-label="Next meditation"><svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button>
+              <button class="vp__btn vp__bar-only vp__bar-skip" type="button" data-act="back" aria-label="Back 10 seconds"><svg class="i" aria-hidden="true"><use href="#i-back10"/></svg></button>
+              <button class="vp__btn vp__bar-only vp__bar-skip" type="button" data-act="fwd" aria-label="Forward 10 seconds"><svg class="i" aria-hidden="true"><use href="#i-fwd10"/></svg></button>
+              <div class="vp__vol">
+                <button class="vp__btn" type="button" data-act="mute" aria-label="Mute"><svg class="i" aria-hidden="true"><use href="#i-volume"/></svg></button>
+                <input class="vp__vrange" id="volume" type="range" min="0" max="1" step="0.02" value="1" aria-label="Volume">
+              </div>
+            </div>
+            <div class="vp__grp vp__grp--r">
+              <button class="vp__btn vp__btn--label" type="button" id="btnSleep" aria-haspopup="menu" aria-expanded="false" aria-label="Sleep timer"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg><span class="vp__label mono" id="sleepLabel" hidden></span></button>
+              <button class="vp__btn vp__btn--text mono" type="button" id="btnSpeed" aria-haspopup="menu" aria-expanded="false" aria-label="Playback speed"><span id="speedLabel">1×</span></button>
+              <button class="vp__btn" type="button" data-act="pip" id="btnPip" aria-label="Pop out player" hidden><svg class="i" aria-hidden="true"><use href="#i-pip"/></svg></button>
+              <button class="vp__btn" type="button" data-act="fullscreen" id="btnFs" aria-label="Full screen"><svg class="i" aria-hidden="true"><use href="#i-fullscreen"/></svg></button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="body">
-        <h3 class="title">${escapeHtml(m.title)}</h3>
-        <div class="meta">${plistChips}</div>
+
+      <div class="vp__hud mono" id="hud" aria-hidden="true"></div>
+      <div class="vp__pipnote" id="pipNote" hidden>
+        <p>Playing in a pop-out window</p>
+        <button class="btn" type="button" data-act="pip">Bring it back</button>
       </div>
-      <button class="card-btn" type="button" aria-label="Open ${escapeHtml(m.title)}" data-num="${m.num}"></button>
-    </article>`;
-  }).join('');
+      <div class="player__spinner" id="spinner" hidden aria-hidden="true"></div>
+      <div class="player__msg" id="msg" hidden role="alert">
+        <p id="msgText"></p>
+        <div class="player__msg-actions" id="msgActions"></div>
+      </div>
 
-  grid.querySelectorAll('.card-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=> openPlayerByNum(parseInt(btn.dataset.num,10)));
-  });
-}
+      <div class="menu" role="menu" id="menuSpeed" hidden></div>
+      <div class="menu" role="menu" id="menuSleep" hidden></div>
+    </div>
 
-searchInput.addEventListener('input', (e)=>{
-  searchTerm = e.target.value;
-  renderGrid();
-});
+    <div class="player__scroll">
+      <div class="player__main">
+        <div class="player__meta" id="meta">
+          <p class="player__num mono" id="pNum"></p>
+          <h2 class="player__title" id="pTitle"></h2>
+          <p class="player__sub" id="pSub"></p>
+          <p class="player__tags" id="pTags"></p>
+        </div>
 
-/* ---------- player modal (navigates within the currently filtered list) ---------- */
-const modal = document.getElementById('playerModal');
-const iframe = document.getElementById('playerIframe');
-const video = document.getElementById('playerVideo');
-const playerError = document.getElementById('playerError');
-const playerNum = document.getElementById('playerNum');
-const playerTitle = document.getElementById('playerTitle');
-const playerPlists = document.getElementById('playerPlists');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-let currentPos = null; // index within currentFilteredList
+        <div class="player__mini-actions">
+          <button class="icon-btn" type="button" data-act="prev" aria-label="Previous meditation">
+            <svg class="i" aria-hidden="true"><use href="#i-prev"/></svg>
+          </button>
+          <button class="icon-btn" type="button" data-act="toggle" id="miniToggle" aria-label="Play">
+            <svg class="i" aria-hidden="true"><use href="#i-play"/></svg>
+          </button>
+          <button class="icon-btn" type="button" data-act="next" aria-label="Next meditation">
+            <svg class="i" aria-hidden="true"><use href="#i-next"/></svg>
+          </button>
+          <button class="icon-btn" type="button" data-act="close" aria-label="Close player and stop">
+            <svg class="i" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
 
-function openPlayerByNum(num){
-  const pos = currentFilteredList.findIndex(m => m.num === num);
-  if(pos === -1) return;
-  openPlayerAtPos(pos);
-}
-function openPlayerAtPos(pos){
-  currentPos = pos;
-  const m = currentFilteredList[pos];
-  loadVideo(m);
-  playerNum.textContent = `No. ${String(m.num).padStart(3,'0')}`;
-  playerTitle.textContent = m.title;
-  playerPlists.textContent = (m.playlists||[]).join(' · ');
-  prevBtn.disabled = pos <= 0;
-  nextBtn.disabled = pos >= currentFilteredList.length - 1;
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function stopMedia(){
-  iframe.src = '';
-  video.pause();
-  video.removeAttribute('src');
-  video.load();
-}
-function loadVideo(m){
-  stopMedia();
-  playerError.hidden = true;
-  const direct = videoSource === 'default' ? archiveUrl(m.id) : null;
-  if(direct){
-    // Web Archive: plain mp4 in a native player
-    iframe.hidden = true;
-    video.hidden = false;
-    video.src = direct;
-    const p = video.play();
-    if(p && p.catch) p.catch(()=>{});   // autoplay may be blocked; controls stay available
-  }else{
-    // GDrive (or no archive link for this entry): Drive embed
-    video.hidden = true;
-    iframe.hidden = false;
-    iframe.src = drivePreview(m.id);
-  }
-}
-video.addEventListener('error', ()=>{
-  if(video.getAttribute('src')) playerError.hidden = false;
-});
-document.getElementById('errorFallbackBtn').addEventListener('click', ()=>{
-  setVideoSource('gdrive');
-  if(currentPos !== null) loadVideo(currentFilteredList[currentPos]);
-});
-function closePlayer(){
-  modal.classList.remove('open');
-  stopMedia();
-  playerError.hidden = true;
-  document.body.style.overflow = '';
-}
-document.getElementById('playerClose').addEventListener('click', closePlayer);
-modal.addEventListener('click', (e)=>{ if(e.target === modal) closePlayer(); });
-document.addEventListener('keydown', (e)=>{
-  if(!modal.classList.contains('open')) return;
-  if(e.key === 'Escape') closePlayer();
-  if(e.key === 'ArrowLeft' && !prevBtn.disabled) openPlayerAtPos(currentPos - 1);
-  if(e.key === 'ArrowRight' && !nextBtn.disabled) openPlayerAtPos(currentPos + 1);
-});
-prevBtn.addEventListener('click', ()=>{ if(currentPos > 0) openPlayerAtPos(currentPos - 1); });
-nextBtn.addEventListener('click', ()=>{ if(currentPos < currentFilteredList.length - 1) openPlayerAtPos(currentPos + 1); });
+        <p class="pip-hint" id="pipHint" hidden>
+          <svg class="i" aria-hidden="true"><use href="#i-pip"/></svg>
+          <span id="pipHintText">Pop-out window isn’t available in this browser or on this device. On some devices it can be enabled in Settings → Apps → Special access → Picture-in-picture</span>
+        </p>
 
-/* ---------- tabs ---------- */
-function switchTab(name){
-  document.querySelectorAll('[data-tab]').forEach(b=>{
-    if(b.matches('button')) b.classList.toggle('active', b.dataset.tab===name);
-  });
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id===name));
-  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
-}
-document.querySelectorAll('.nav-links button, .bottom-nav button').forEach(btn=>{
-  btn.addEventListener('click', ()=> switchTab(btn.dataset.tab));
-});
+        <div class="embed-nav" id="embedNav" hidden>
+          <button class="btn" type="button" data-act="prev"><svg class="i" aria-hidden="true"><use href="#i-prev"/></svg><span>Previous</span></button>
+          <button class="btn" type="button" data-act="next"><span>Next</span><svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button>
+        </div>
 
-/* ---------- video source switch ---------- */
-function setVideoSource(src){
-  videoSource = src;
-  document.querySelectorAll('#sourceSwitch button').forEach(b=>{
-    const on = b.dataset.source === src;
-    b.classList.toggle('active', on);
-    b.setAttribute('aria-pressed', on ? 'true' : 'false');
-  });
-}
-document.querySelectorAll('#sourceSwitch button').forEach(btn=>{
-  btn.addEventListener('click', ()=> setVideoSource(btn.dataset.source));
-});
+        <div class="tools" id="tools">
+          <button class="tool__btn" type="button" data-act="fav" id="toolFav" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-heart"/></svg><span>Favorite</span></button>
+          <button class="tool__btn" type="button" data-act="share"><svg class="i" aria-hidden="true"><use href="#i-share"/></svg><span>Share</span></button>
+          <a class="tool__btn" id="toolDownload" href="#" target="_blank" rel="noopener noreferrer" download><svg class="i" aria-hidden="true"><use href="#i-download"/></svg><span>Download</span></a>
+          <div class="tool">
+            <button class="tool__btn" type="button" id="toolAfter" aria-haspopup="menu" aria-expanded="false"><svg class="i" aria-hidden="true"><use href="#i-autonext"/></svg><span id="toolAfterLabel">Autoplay</span></button>
+            <div class="menu" role="menu" id="menuAfter" hidden></div>
+          </div>
+          <div class="tool">
+            <button class="tool__btn" type="button" id="toolSource" aria-haspopup="menu" aria-expanded="false" aria-label="Play as"><svg class="i" aria-hidden="true"><use href="#i-source"/></svg><span id="toolSourceLabel">Source</span></button>
+            <div class="menu" role="menu" id="menuSource" hidden></div>
+          </div>
+        </div>
+        <p class="embed-note" id="embedNote" hidden>Google Drive playback does not support lock screen or notification controls. Switch the source to Internet Archive when the video is available there.</p>
+      </div>
 
-/* ---------- copy-to-clipboard (Proton Email row) ---------- */
-document.querySelectorAll('.copy-row').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const text = btn.dataset.copy;
-    const toast = btn.querySelector('.copied-toast');
+      <aside class="queue" aria-labelledby="queueTitle">
+        <div class="queue__head">
+          <h3 id="queueTitle">Up next</h3>
+          <span class="queue__count mono" id="queueCount"></span>
+        </div>
+        <ol class="queue__list" id="queueList"></ol>
+      </aside>
+    </div>
+  </div>
+</section>
 
-    const flash = ()=>{
-      toast.classList.add('show');
-      clearTimeout(btn._toastTimer);
-      btn._toastTimer = setTimeout(()=> toast.classList.remove('show'), 1000);
-    };
+<dialog class="settings" id="settings" aria-labelledby="settingsTitle">
+  <form method="dialog" class="settings__form">
+    <div class="settings__head">
+      <h2 id="settingsTitle">Settings</h2>
+      <button class="icon-btn" type="submit" aria-label="Close settings"><svg class="i" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
 
-    if(navigator.clipboard && window.isSecureContext){
-      navigator.clipboard.writeText(text).then(flash).catch(()=> fallbackCopy(text, flash));
-    }else{
-      fallbackCopy(text, flash);
-    }
-  });
-});
+    <fieldset class="field">
+      <legend>Playback</legend>
+      <div class="seg" role="radiogroup" aria-label="Playback">
+        <label><input type="radio" name="mode" value="video"><span>Video</span></label>
+        <label><input type="radio" name="mode" value="audio"><span>Audio only</span></label>
+      </div>
+      <p class="field__hint">Audio only is lighter on data and suits listening in the background. It always plays from the Internet Archive. Applies from the next meditation you open.</p>
+    </fieldset>
 
-function fallbackCopy(text, onDone){
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.opacity = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try{ document.execCommand('copy'); }catch(e){ console.error('Copy failed:', e); }
-  document.body.removeChild(ta);
-  onDone();
-}
+    <fieldset class="field" id="sourceField">
+      <legend>Video source</legend>
+      <div class="seg" role="radiogroup" aria-label="Video source">
+        <label><input type="radio" name="source" value="archive"><span>Internet Archive</span></label>
+        <label><input type="radio" name="source" value="drive"><span>Google Drive</span></label>
+      </div>
+      <p class="field__hint" id="sourceHint">Internet Archive supports lock screen controls and resuming. Google Drive is a fallback. Applies from the next meditation you open.</p>
+    </fieldset>
 
-loadData();
-</script>
+    <fieldset class="field">
+      <legend>When a meditation ends</legend>
+      <div class="seg" role="radiogroup" aria-label="When a meditation ends">
+        <label><input type="radio" name="after" value="next"><span>Play next</span></label>
+        <label><input type="radio" name="after" value="repeat"><span>Repeat</span></label>
+        <label><input type="radio" name="after" value="stop"><span>Stop</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="field">
+      <legend>Appearance</legend>
+      <label class="check"><input type="checkbox" name="calm"><span>Calm mode <small>Turns off animations and glow effects</small></span></label>
+    </fieldset>
+
+    <fieldset class="field" id="installField" hidden>
+      <legend>App</legend>
+      <button class="btn" type="button" id="installBtn">Install Satania Archive</button>
+      <p class="field__hint" id="installHint"></p>
+    </fieldset>
+
+    <fieldset class="field field--keys">
+      <legend>Keyboard</legend>
+      <dl class="keys">
+        <div><dt>Space / K</dt><dd>Play or pause</dd></div>
+        <div><dt>← → / J L</dt><dd>Back or forward 10 s</dd></div>
+        <div><dt>0 – 9</dt><dd>Jump to 0 – 90 %</dd></div>
+        <div><dt>Shift + ← →</dt><dd>Previous or next</dd></div>
+        <div><dt>↑ ↓</dt><dd>Volume</dd></div>
+        <div><dt>M</dt><dd>Mute</dd></div>
+        <div><dt>F / double-click</dt><dd>Full screen (video)</dd></div>
+        <div><dt>Esc</dt><dd>Leave full screen, then minimize</dd></div>
+      </dl>
+    </fieldset>
+
+    <fieldset class="field">
+      <legend>Saved data</legend>
+      <button class="btn btn--danger" type="button" id="clearData">Clear favorites and history</button>
+    </fieldset>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
+
+<noscript><p class="noscript">Satania Archive needs JavaScript to list and play the meditations.</p></noscript>
+
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
